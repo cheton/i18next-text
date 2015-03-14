@@ -1,0 +1,10 @@
+{
+    "name": "i18next-text",
+    "version": "0.1.0",
+    "main": [
+        "dist/*"
+    ],
+    "dependencies": {
+        "i18next": ">=1.7.0"
+    }
+}

@@ -1,0 +1,51 @@
+{
+  "name": "i18next-text",
+  "version": "0.1.0",
+  "description": "Using i18next translations without having the “key” as strings",
+  "homepage": "https://github.com/cheton/i18next-text",
+  "author": "Cheton Wu <cheton@gmail.com>",
+  "scripts": {
+    "test": "npm run gulp && npm run tap-test",
+    "gulp": "gulp",
+    "tap-test": "tap test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:cheton/i18next-text.git"
+  },
+  "license": "MIT",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/cheton/i18next-text/blob/master/LICENSE"
+    }
+  ],
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.1.x"
+  },
+  "keywords": [
+    "i18next"
+  ],
+  "dependencies": {
+    "i18next": "^1.7.10",
+    "sha1": "^1.1.0"
+  },
+  "devDependencies": {
+    "browserify": "^9.0.3",
+    "del": "^1.1.1",
+    "gulp": "^3.8.11",
+    "gulp-concat": "^2.5.2",
+    "gulp-header": "^1.2.2",
+    "gulp-jshint": "^1.9.2",
+    "gulp-rename": "^1.2.0",
+    "gulp-replace": "^0.5.3",
+    "gulp-uglify": "^1.1.0",
+    "gulp-util": "^3.0.4",
+    "lodash": "^3.5.0",
+    "run-sequence": "^1.0.2",
+    "tap": "^0.7.1",
+    "vinyl-source-stream": "^1.1.0",
+    "yargs": "^3.5.4"
+  }
+}
