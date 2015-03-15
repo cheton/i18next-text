@@ -104,7 +104,7 @@ Visit [http://i18next.com/pages/doc_features.html](http://i18next.com/pages/doc_
 
 ### Initialization options
 
-### Custom your hash function
+### Custom hash function 
 
 ## License
 
