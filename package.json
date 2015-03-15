@@ -1,7 +1,7 @@
 {
   "name": "i18next-text",
   "version": "0.1.0",
-  "description": "Using i18next translations without having the “key” as strings",
+  "description": "Using i18next translations without having the `key` as strings, you do not need to worry about i18n key naming.",
   "homepage": "https://github.com/cheton/i18next-text",
   "author": "Cheton Wu <cheton@gmail.com>",
   "scripts": {
