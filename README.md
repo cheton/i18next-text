@@ -9,7 +9,7 @@ It's recommended to use [i18next-scanner](https://github.com/cheton/i18next-scan
 Save your time and work more efficiently!
 
 ## Features
-* Supports most i18next features.
+* Supports most [i18next features](http://i18next.com/pages/doc_features.html).
 * Automatically generates a hash for an i18n text string as its unique key. It is not necessary to manually maintain resource files.
 * Supports CRC32, MD5, and SHA-1 hash (The default is SHA-1).
 * You can customize your own hash function by including the [i18next-text.custom.js](https://raw.githubusercontent.com/cheton/i18next-text/master/dist/i18next-text.custom.js) file with only 2KB in size.
