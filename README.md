@@ -14,6 +14,18 @@ Save your time and work more efficiently!
 * Supports CRC32, MD5, and SHA-1 hash (The default is SHA-1).
 * You can customize your own hash function by including the [i18next-text.custom.js](https://raw.githubusercontent.com/cheton/i18next-text/master/dist/i18next-text.custom.js) file with only 2KB in size.
 
+## Installation
+
+### Bower
+```
+bower install i18next-text
+```
+
+### NPM
+```
+npm install i18next-text
+```
+
 ## Usage
 
 For example, assume that you have the following directory structure:
