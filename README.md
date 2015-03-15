@@ -2,7 +2,7 @@
 
 [![NPM](https://nodei.co/npm/i18next-text.png?downloads=true&stars=true)](https://nodei.co/npm/i18next-text/)
 
-Using i18next translations without having the `key` as strings, you do not need to worry about i18n key naming.
+Using [i18next](http://i18next.com/) translations without having the `key` as strings, you do not need to worry about i18n key naming.
 
 It's recommended to use [i18next-scanner](https://github.com/cheton/i18next-scanner) as a Grunt/Gulp task to scan your code, extract and merge translation keys and strings into i18n resource files.
 
@@ -86,7 +86,7 @@ i18n.init({/* options */}, function() {
 
 ### Translation features
 
-It supports most i18next features, for example:
+[i18next-text](https://github.com/cheton/i18next-text/) supports most [i18next features](http://i18next.com/pages/doc_features.html), for example:
 
 * Access value in different language:
     ```javascript
@@ -100,7 +100,11 @@ It supports most i18next features, for example:
 
 Visit [http://i18next.com/pages/doc_features.html](http://i18next.com/pages/doc_features.html) to see more examples.
 
-## Initialization
+## Advanced Usage
+
+### Initialization options
+
+### Custom your hash function
 
 ## License
 
