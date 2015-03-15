@@ -62,9 +62,9 @@ i18n.init({/* initialization options */}, function() {
 
 ### Browser globals
 ```html
-&lt;script src="vendor/i18next.js">&lt;/script&gt;
-&lt;script src="vendor/i18next-text.js">&lt;/script&gt;
-&lt;script&gt;
+<script src="vendor/i18next.js"></script>
+<script src="vendor/i18next-text.js"></script>
+<script>
 // extends i18n object to provide a new _() method
 i18n._ = i18nText._;
 
