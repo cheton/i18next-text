@@ -27,8 +27,7 @@ var pad = function(n, width, z) {
 module.exports = function(str) {
     var checksum = crc32.str(str);
     // convert to 2's complement hex
-    var str = (checksum >>> 0).toString(16);
-    return pad(str, 8);
+    return pad((checksum >>> 0).toString(16), 8);
 };
 
 },{"crc-32":8}],3:[function(require,module,exports){
