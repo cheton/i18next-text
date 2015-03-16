@@ -58,112 +58,69 @@ test('i18next initialization', function(t) {
     });
 });
 
-test('sha1', function(t) {
+test('hash function', function(t) {
     i18n.init(i18nextOptions, function() {
-        var str = 'Loading...';
-        var expectedKey = 'b04ba49f848624bb97ab094a2631d2ad74913498';
+        var runTests = function(t, hashMethod) {
+            var hash = require('../lib/hash');
+            var str = 'Loading...';
+            var expectedKey = hash[hashMethod](str);
 
-        var sha1 = require('../lib/hash/sha1');
-        t.equal(expectedKey, sha1(str), 'The value of sha1(' + JSON.stringify(str) + ') should be equal to ' + expectedKey);
+            text.init({hash: hashMethod});
 
-        text.init({hash: 'sha1'});
+            // Test for existence of a key
+            t.ok(i18n.exists(expectedKey), 'This key should exist.');
 
-        // Test for existence of a key
-        t.ok(i18n.exists(expectedKey), 'This key should exist.');
+            // English
+            i18n.setLng('en');
+            t.equal('Loading...', i18n._(str), 'English translation should be \'Loading...\'');
+            t.equal(expectedKey, text.key(str));
 
-        // English
-        i18n.setLng('en');
-        t.equal('Loading...', i18n._(str));
-        t.equal(expectedKey, text.key(str));
+            // German
+            i18n.setLng('de');
+            t.equal('Wird geladen...', i18n._(str), 'German translation should be \'Wird geladen...\'');
+            t.equal(expectedKey, text.key(str));
 
-        // German
-        i18n.setLng('de');
-        t.equal('Wird geladen...', i18n._(str));
-        t.equal(expectedKey, text.key(str));
+            // French
+            i18n.setLng('fr');
+            t.equal('Chargement...', i18n._(str), 'French translation should be \'Chargement...\'');
+            t.equal(expectedKey, text.key(str));
 
-        // French
-        i18n.setLng('fr');
-        t.equal('Chargement...', i18n._(str));
-        t.equal(expectedKey, text.key(str));
+            // Spanish
+            i18n.setLng('es');
+            t.equal('Cargando...', i18n._(str), 'Spanish translation should be \'Cargando...\'');
+            t.equal(expectedKey, text.key(str));
 
-        // Spanish
-        i18n.setLng('es');
-        t.equal('Cargando...', i18n._(str));
-        t.equal(expectedKey, text.key(str));
+            // Italian
+            i18n.setLng('it');
+            t.equal('Caricamento in corso...', i18n._(str), 'Italian translation should be \'Caricamento in corso...\'');
+            t.equal(expectedKey, text.key(str));
 
-        // Italian
-        i18n.setLng('it');
-        t.equal('Caricamento in corso...', i18n._(str));
-        t.equal(expectedKey, text.key(str));
+            // Japanese
+            i18n.setLng('ja');
+            t.equal('ロード中...', i18n._(str), 'Japanese translation should be \'ロード中...\'');
+            t.equal(expectedKey, text.key(str));
 
-        // Japanese
-        i18n.setLng('ja');
-        t.equal('ロード中...', i18n._(str));
-        t.equal(expectedKey, text.key(str));
+            // Not exists
+            str = 'This value does not exist.';
+            expectedKey = hash[hashMethod](str);
+            t.notOk(i18n.exists(expectedKey));
+            t.notOk(text.exists(str));
+            t.assert(expectedKey === text.key(str));
+            t.equal(str, i18n._(str));
 
-        // Not exists
-        str = 'This value does not exist.';
-        expectedKey = sha1(str);
-        t.notOk(i18n.exists(expectedKey));
-        t.notOk(text.exists(str));
-        t.assert(expectedKey === text.key(str));
-        t.equal(str, i18n._(str));
+            t.end();
+        };
 
-        t.end();
-    });
-});
+        t.test('crc32', function(t) {
+            runTests(t, 'crc32');
+        });
 
-test('crc32', function(t) {
-    i18n.init(i18nextOptions, function() {
-        var str = 'Loading...';
-        var expectedKey = 'cd643ef3';
+        t.test('sha1', function(t) {
+            runTests(t, 'sha1');
+        });
 
-        var crc32 = require('../lib/hash/crc32');
-        t.equal(expectedKey, crc32(str), 'The value of crc32(' + JSON.stringify(str) + ') should be equal to ' + expectedKey);
-
-        text.init({hash: 'crc32'});
-
-        // Test for existence of a key
-        t.ok(i18n.exists(expectedKey), 'This key should exist.');
-
-        // English
-        i18n.setLng('en');
-        t.equal('Loading...', i18n._(str));
-        t.equal(expectedKey, text.key(str));
-
-        // German
-        i18n.setLng('de');
-        t.equal('Wird geladen...', i18n._(str));
-        t.equal(expectedKey, text.key(str));
-
-        // French
-        i18n.setLng('fr');
-        t.equal('Chargement...', i18n._(str));
-        t.equal(expectedKey, text.key(str));
-
-        // Spanish
-        i18n.setLng('es');
-        t.equal('Cargando...', i18n._(str));
-        t.equal(expectedKey, text.key(str));
-
-        // Italian
-        i18n.setLng('it');
-        t.equal('Caricamento in corso...', i18n._(str));
-        t.equal(expectedKey, text.key(str));
-
-        // Japanese
-        i18n.setLng('ja');
-        t.equal('ロード中...', i18n._(str));
-        t.equal(expectedKey, text.key(str));
-
-        // Not exists
-        str = 'This value does not exist.';
-        expectedKey = crc32(str);
-        t.notOk(i18n.exists(expectedKey));
-        t.notOk(text.exists(str));
-        t.assert(expectedKey === text.key(str));
-        t.equal(str, i18n._(str));
-
-        t.end();
+        t.test('md5', function(t) {
+            runTests(t, 'md5');
+        });
     });
 });

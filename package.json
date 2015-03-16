@@ -1,6 +1,6 @@
 {
   "name": "i18next-text",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Using i18next translations without having the `key` as strings, you do not need to worry about i18n key naming.",
   "homepage": "http://cheton.github.io/i18next-text/",
   "author": "Cheton Wu <cheton@gmail.com>",
@@ -29,9 +29,11 @@
     "i18n",
     "hash",
     "sha1",
-    "crc32"
+    "crc32",
+    "md5"
   ],
   "dependencies": {
+    "MD5": "^1.2.1",
     "crc-32": "^0.2.2",
     "i18next": "^1.7.10",
     "sha1": "^1.1.0"
