@@ -131,46 +131,37 @@ var options = {
 i18n._ = text._;
 
 i18n.init(options, function() {
-    // Current language is English
     i18n.t('loading'); // will return "Loading..."
-
-    // Change language to German
-    i18n.setLng('de');
-
-    i18n._('Loading...'); // will return "Wird geladen..."
+    i18n._('Loading...', {lng: 'de'}); // will return "Wird geladen..."
 });
 ```
 
 ### Browser globals
 ```javascript
 (function(root) {
-var i18n = root.i18n;
-var i18nText = root.i18nText;
-var options = {
-    lng: 'en',
-    preload: ['en', 'de'],
-    load: 'current',
-    fallbackLng: false,
-    resGetPath: 'i18n/__lng__/__ns__.json',
-    ns: {
-        namespaces: [
-            'resource' // default
-        ],
-        defaultNs: 'resource'
-    }
-};
+    var i18n = root.i18n;
+    var i18nText = root.i18nText;
+    var options = {
+        lng: 'en',
+        preload: ['en', 'de'],
+        load: 'current',
+        fallbackLng: false,
+        resGetPath: 'i18n/__lng__/__ns__.json',
+        ns: {
+            namespaces: [
+                'resource' // default
+            ],
+            defaultNs: 'resource'
+        }
+    };
 
-// extends i18n object to provide a new _() method
-i18n._ = i18nText._;
+    // extends i18n object to provide a new _() method
+    i18n._ = i18nText._;
 
-i18n.init(options, function() {
-    // Current language is English
-    i18n.t('loading'); // will return "Loading..."
-    
-    // Change language to German
-    i18n.setLng('de');
-    i18n._('Loading...'); // will return "Wird geladen..."
-});
+    i18n.init(options, function() {
+        i18n.t('loading'); // will return "Loading..."
+        i18n._('Loading...', {lng: 'de'}); // will return "Wird geladen..."
+    });
 }(this));
 ```
 
@@ -212,7 +203,9 @@ i18n.init({sendMissing: true});
 ```
 
 ### Custom hash function 
-To apply a custom hash function, you can change `hash` on i18nText.init as needed:
+You can customize your own hash function by including the [i18next-text.custom.js](https://raw.githubusercontent.com/cheton/i18next-text/master/dist/i18next-text.custom.js) file with only 2KB in size.
+
+Change `hash` on i18nText.init to apply a custom hash function:
 ```javascript
 i18nText.init({
     hash: function(str) {
