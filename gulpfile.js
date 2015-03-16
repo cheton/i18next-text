@@ -17,9 +17,13 @@ var config = require('./gulp/config');
 
 // Sync the following properties from `package.json` to `bower.json`:
 // * name
+// * description
 // * version
+// * license
 bower.name = pkg.name;
+bower.description = pkg.description;
 bower.version = pkg.version;
+bower.license = pkg.license;
 fs.writeFileSync('bower.json', JSON.stringify(bower, null, 4));
 
 gulp.task('clean', function(callback) {
