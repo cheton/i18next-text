@@ -63,6 +63,9 @@ test('sha1', function(t) {
         var str = 'Loading...';
         var expectedKey = 'b04ba49f848624bb97ab094a2631d2ad74913498';
 
+        var sha1 = require('../lib/hash/sha1');
+        t.equal(expectedKey, sha1(str), 'The value of sha1(' + JSON.stringify(str) + ') should be equal to ' + expectedKey);
+
         text.init({hash: 'sha1'});
 
         // Test for existence of a key
@@ -99,12 +102,68 @@ test('sha1', function(t) {
         t.equal(expectedKey, text.key(str));
 
         // Not exists
-        t.notOk(i18n.exists('b691228f50f4516da317c20d52bb83be5b58b739'), 'This key would never exist.');
-        t.notOk(text.exists('This value does not exist.'));
-        t.equal('This value does not exist.', i18n._('This value does not exist.'));
-        t.equal('b691228f50f4516da317c20d52bb83be5b58b739', text.key('This value does not exist.'));
+        str = 'This value does not exist.';
+        expectedKey = sha1(str);
+        t.notOk(i18n.exists(expectedKey));
+        t.notOk(text.exists(str));
+        t.assert(expectedKey === text.key(str));
+        t.equal(str, i18n._(str));
 
         t.end();
     });
 });
 
+test('crc32', function(t) {
+    i18n.init(i18nextOptions, function() {
+        var str = 'Loading...';
+        var expectedKey = 'cd643ef3';
+
+        var crc32 = require('../lib/hash/crc32');
+        t.equal(expectedKey, crc32(str), 'The value of crc32(' + JSON.stringify(str) + ') should be equal to ' + expectedKey);
+
+        text.init({hash: 'crc32'});
+
+        // Test for existence of a key
+        t.ok(i18n.exists(expectedKey), 'This key should exist.');
+
+        // English
+        i18n.setLng('en');
+        t.equal('Loading...', i18n._(str));
+        t.equal(expectedKey, text.key(str));
+
+        // German
+        i18n.setLng('de');
+        t.equal('Wird geladen...', i18n._(str));
+        t.equal(expectedKey, text.key(str));
+
+        // French
+        i18n.setLng('fr');
+        t.equal('Chargement...', i18n._(str));
+        t.equal(expectedKey, text.key(str));
+
+        // Spanish
+        i18n.setLng('es');
+        t.equal('Cargando...', i18n._(str));
+        t.equal(expectedKey, text.key(str));
+
+        // Italian
+        i18n.setLng('it');
+        t.equal('Caricamento in corso...', i18n._(str));
+        t.equal(expectedKey, text.key(str));
+
+        // Japanese
+        i18n.setLng('ja');
+        t.equal('ロード中...', i18n._(str));
+        t.equal(expectedKey, text.key(str));
+
+        // Not exists
+        str = 'This value does not exist.';
+        expectedKey = crc32(str);
+        t.notOk(i18n.exists(expectedKey));
+        t.notOk(text.exists(str));
+        t.assert(expectedKey === text.key(str));
+        t.equal(str, i18n._(str));
+
+        t.end();
+    });
+});
