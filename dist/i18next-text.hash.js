@@ -11,14 +11,30 @@
     }
 }(this, function(exports) {
     exports.sha1 = require('./sha1');
+    exports.crc32 = require('./crc32');
 
     return exports;
 }));
 
-},{"./sha1":2}],2:[function(require,module,exports){
+},{"./crc32":2,"./sha1":3}],2:[function(require,module,exports){
+var crc32 = require('crc-32');
+var pad = function(n, width, z) {
+    z = z || '0';
+    n = n + '';
+    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+};
+
+module.exports = function(str) {
+    var checksum = crc32.str(str);
+    // convert to 2's complement hex
+    var str = (checksum >>> 0).toString(16);
+    return pad(str, 8);
+};
+
+},{"crc-32":8}],3:[function(require,module,exports){
 module.exports = require('sha1');
 
-},{"sha1":9}],3:[function(require,module,exports){
+},{"sha1":11}],4:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -1354,7 +1370,7 @@ function decodeUtf8Char (str) {
   }
 }
 
-},{"base64-js":4,"ieee754":5,"is-array":6}],4:[function(require,module,exports){
+},{"base64-js":5,"ieee754":6,"is-array":7}],5:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -1480,7 +1496,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 exports.read = function(buffer, offset, isLE, mLen, nBytes) {
   var e, m,
       eLen = nBytes * 8 - mLen - 1,
@@ -1566,7 +1582,7 @@ exports.write = function(buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128;
 };
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 
 /**
  * isArray
@@ -1601,7 +1617,105 @@ module.exports = isArray || function (val) {
   return !! val && '[object Array]' == str.call(val);
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
+(function (Buffer){
+/* crc32.js (C) 2014 SheetJS -- http://sheetjs.com */
+/* vim: set ts=2: */
+var CRC32 = {};
+(function(CRC32) {
+CRC32.version = '0.2.2';
+/* see perf/crc32table.js */
+function signed_crc_table() {
+	var c, table = new Array(256);
+
+	for(var n =0; n != 256; ++n){
+		c = n;
+		c = ((c&1) ? (-306674912 ^ (c >>> 1)) : (c >>> 1));
+		c = ((c&1) ? (-306674912 ^ (c >>> 1)) : (c >>> 1));
+		c = ((c&1) ? (-306674912 ^ (c >>> 1)) : (c >>> 1));
+		c = ((c&1) ? (-306674912 ^ (c >>> 1)) : (c >>> 1));
+		c = ((c&1) ? (-306674912 ^ (c >>> 1)) : (c >>> 1));
+		c = ((c&1) ? (-306674912 ^ (c >>> 1)) : (c >>> 1));
+		c = ((c&1) ? (-306674912 ^ (c >>> 1)) : (c >>> 1));
+		c = ((c&1) ? (-306674912 ^ (c >>> 1)) : (c >>> 1));
+		table[n] = c;
+	}
+
+	return typeof Int32Array !== 'undefined' ? new Int32Array(table) : table;
+}
+
+var table = signed_crc_table();
+/* charCodeAt is the best approach for binary strings */
+var use_buffer = typeof Buffer !== 'undefined';
+function crc32_bstr(bstr) {
+	if(bstr.length > 32768) if(use_buffer) return crc32_buf_8(Buffer(bstr));
+	var crc = -1, L = bstr.length - 1;
+	for(var i = 0; i < L;) {
+		crc =  table[(crc ^ bstr.charCodeAt(i++)) & 0xFF] ^ (crc >>> 8);
+		crc =  table[(crc ^ bstr.charCodeAt(i++)) & 0xFF] ^ (crc >>> 8);
+	}
+	if(i === L) crc = (crc >>> 8) ^ table[(crc ^ bstr.charCodeAt(i)) & 0xFF];
+	return crc ^ -1;
+}
+
+function crc32_buf(buf) {
+	if(buf.length > 10000) return crc32_buf_8(buf);
+	for(var crc = -1, i = 0, L=buf.length-3; i < L;) {
+		crc = (crc >>> 8) ^ table[(crc^buf[i++])&0xFF];
+		crc = (crc >>> 8) ^ table[(crc^buf[i++])&0xFF];
+		crc = (crc >>> 8) ^ table[(crc^buf[i++])&0xFF];
+		crc = (crc >>> 8) ^ table[(crc^buf[i++])&0xFF];
+	}
+	while(i < L+3) crc = (crc >>> 8) ^ table[(crc^buf[i++])&0xFF];
+	return crc ^ -1;
+}
+
+function crc32_buf_8(buf) {
+	for(var crc = -1, i = 0, L=buf.length-7; i < L;) {
+		crc = (crc >>> 8) ^ table[(crc^buf[i++])&0xFF];
+		crc = (crc >>> 8) ^ table[(crc^buf[i++])&0xFF];
+		crc = (crc >>> 8) ^ table[(crc^buf[i++])&0xFF];
+		crc = (crc >>> 8) ^ table[(crc^buf[i++])&0xFF];
+		crc = (crc >>> 8) ^ table[(crc^buf[i++])&0xFF];
+		crc = (crc >>> 8) ^ table[(crc^buf[i++])&0xFF];
+		crc = (crc >>> 8) ^ table[(crc^buf[i++])&0xFF];
+		crc = (crc >>> 8) ^ table[(crc^buf[i++])&0xFF];
+	}
+	while(i < L+7) crc = (crc >>> 8) ^ table[(crc^buf[i++])&0xFF];
+	return crc ^ -1;
+}
+
+/* much much faster to intertwine utf8 and crc */
+function crc32_str(str) {
+	for(var crc = -1, i = 0, L=str.length, c, d; i < L;) {
+		c = str.charCodeAt(i++);
+		if(c < 0x80) {
+			crc = (crc >>> 8) ^ table[(crc ^ c) & 0xFF];
+		} else if(c < 0x800) {
+			crc = (crc >>> 8) ^ table[(crc ^ (192|((c>>6)&31))) & 0xFF];
+			crc = (crc >>> 8) ^ table[(crc ^ (128|(c&63))) & 0xFF];
+		} else if(c >= 0xD800 && c < 0xE000) {
+			c = (c&1023)+64; d = str.charCodeAt(i++) & 1023;
+			crc = (crc >>> 8) ^ table[(crc ^ (240|((c>>8)&7))) & 0xFF];
+			crc = (crc >>> 8) ^ table[(crc ^ (128|((c>>2)&63))) & 0xFF];
+			crc = (crc >>> 8) ^ table[(crc ^ (128|((d>>6)&15)|(c&3))) & 0xFF];
+			crc = (crc >>> 8) ^ table[(crc ^ (128|(d&63))) & 0xFF];
+		} else {
+			crc = (crc >>> 8) ^ table[(crc ^ (224|((c>>12)&15))) & 0xFF];
+			crc = (crc >>> 8) ^ table[(crc ^ (128|((c>>6)&63))) & 0xFF];
+			crc = (crc >>> 8) ^ table[(crc ^ (128|(c&63))) & 0xFF];
+		}
+	}
+	return crc ^ -1;
+}
+CRC32.table = table;
+CRC32.bstr = crc32_bstr;
+CRC32.buf = crc32_buf;
+CRC32.str = crc32_str;
+})(typeof exports !== "undefined" && typeof DO_NOT_EXPORT_CRC === 'undefined' ? exports : CRC32);
+
+}).call(this,require("buffer").Buffer)
+},{"buffer":4}],9:[function(require,module,exports){
 var charenc = {
   // UTF-8 encoding
   utf8: {
@@ -1636,7 +1750,7 @@ var charenc = {
 
 module.exports = charenc;
 
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function() {
   var base64map
       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
@@ -1734,7 +1848,7 @@ module.exports = charenc;
   module.exports = crypt;
 })();
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function (Buffer){
 (function() {
   var crypt = require('crypt'),
@@ -1820,4 +1934,4 @@ module.exports = charenc;
 })();
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":3,"charenc":7,"crypt":8}]},{},[1]);
+},{"buffer":4,"charenc":9,"crypt":10}]},{},[1]);

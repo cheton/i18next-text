@@ -1,7 +1,7 @@
 /**
  * i18next-text - Using i18next translations without having the `key` as strings, you do not need to worry about i18n key naming.
  * Cheton Wu <cheton@gmail.com>
- * Version 0.2.1
+ * Version 0.3.0
  * MIT Licensed
  */
 (function e(t, n, r) {
@@ -40,17 +40,35 @@
             }
         })(this, function(exports) {
             exports.sha1 = require("./sha1");
+            exports.crc32 = require("./crc32");
             return exports;
         });
     }, {
-        "./sha1": 2
+        "./crc32": 2,
+        "./sha1": 3
     } ],
     2: [ function(require, module, exports) {
-        module.exports = require("sha1");
+        var crc32 = require("crc-32");
+        var pad = function(n, width, z) {
+            z = z || "0";
+            n = n + "";
+            return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+        };
+        module.exports = function(str) {
+            var checksum = crc32.str(str);
+            // convert to 2's complement hex
+            var str = (checksum >>> 0).toString(16);
+            return pad(str, 8);
+        };
     }, {
-        sha1: 9
+        "crc-32": 8
     } ],
     3: [ function(require, module, exports) {
+        module.exports = require("sha1");
+    }, {
+        sha1: 11
+    } ],
+    4: [ function(require, module, exports) {
         /*!
  * The buffer module from node.js, for the browser.
  *
@@ -1188,11 +1206,11 @@
             }
         }
     }, {
-        "base64-js": 4,
-        ieee754: 5,
-        "is-array": 6
+        "base64-js": 5,
+        ieee754: 6,
+        "is-array": 7
     } ],
-    4: [ function(require, module, exports) {
+    5: [ function(require, module, exports) {
         var lookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
         (function(exports) {
             "use strict";
@@ -1289,7 +1307,7 @@
             exports.fromByteArray = uint8ToBase64;
         })(typeof exports === "undefined" ? this.base64js = {} : exports);
     }, {} ],
-    5: [ function(require, module, exports) {
+    6: [ function(require, module, exports) {
         exports.read = function(buffer, offset, isLE, mLen, nBytes) {
             var e, m, eLen = nBytes * 8 - mLen - 1, eMax = (1 << eLen) - 1, eBias = eMax >> 1, nBits = -7, i = isLE ? nBytes - 1 : 0, d = isLE ? -1 : 1, s = buffer[offset + i];
             i += d;
@@ -1350,7 +1368,7 @@
             buffer[offset + i - d] |= s * 128;
         };
     }, {} ],
-    6: [ function(require, module, exports) {
+    7: [ function(require, module, exports) {
         /**
  * isArray
  */
@@ -1379,7 +1397,102 @@
             return !!val && "[object Array]" == str.call(val);
         };
     }, {} ],
-    7: [ function(require, module, exports) {
+    8: [ function(require, module, exports) {
+        (function(Buffer) {
+            /* crc32.js (C) 2014 SheetJS -- http://sheetjs.com */
+            /* vim: set ts=2: */
+            var CRC32 = {};
+            (function(CRC32) {
+                CRC32.version = "0.2.2";
+                /* see perf/crc32table.js */
+                function signed_crc_table() {
+                    var c, table = new Array(256);
+                    for (var n = 0; n != 256; ++n) {
+                        c = n;
+                        c = c & 1 ? -306674912 ^ c >>> 1 : c >>> 1;
+                        c = c & 1 ? -306674912 ^ c >>> 1 : c >>> 1;
+                        c = c & 1 ? -306674912 ^ c >>> 1 : c >>> 1;
+                        c = c & 1 ? -306674912 ^ c >>> 1 : c >>> 1;
+                        c = c & 1 ? -306674912 ^ c >>> 1 : c >>> 1;
+                        c = c & 1 ? -306674912 ^ c >>> 1 : c >>> 1;
+                        c = c & 1 ? -306674912 ^ c >>> 1 : c >>> 1;
+                        c = c & 1 ? -306674912 ^ c >>> 1 : c >>> 1;
+                        table[n] = c;
+                    }
+                    return typeof Int32Array !== "undefined" ? new Int32Array(table) : table;
+                }
+                var table = signed_crc_table();
+                /* charCodeAt is the best approach for binary strings */
+                var use_buffer = typeof Buffer !== "undefined";
+                function crc32_bstr(bstr) {
+                    if (bstr.length > 32768) if (use_buffer) return crc32_buf_8(Buffer(bstr));
+                    var crc = -1, L = bstr.length - 1;
+                    for (var i = 0; i < L; ) {
+                        crc = table[(crc ^ bstr.charCodeAt(i++)) & 255] ^ crc >>> 8;
+                        crc = table[(crc ^ bstr.charCodeAt(i++)) & 255] ^ crc >>> 8;
+                    }
+                    if (i === L) crc = crc >>> 8 ^ table[(crc ^ bstr.charCodeAt(i)) & 255];
+                    return crc ^ -1;
+                }
+                function crc32_buf(buf) {
+                    if (buf.length > 1e4) return crc32_buf_8(buf);
+                    for (var crc = -1, i = 0, L = buf.length - 3; i < L; ) {
+                        crc = crc >>> 8 ^ table[(crc ^ buf[i++]) & 255];
+                        crc = crc >>> 8 ^ table[(crc ^ buf[i++]) & 255];
+                        crc = crc >>> 8 ^ table[(crc ^ buf[i++]) & 255];
+                        crc = crc >>> 8 ^ table[(crc ^ buf[i++]) & 255];
+                    }
+                    while (i < L + 3) crc = crc >>> 8 ^ table[(crc ^ buf[i++]) & 255];
+                    return crc ^ -1;
+                }
+                function crc32_buf_8(buf) {
+                    for (var crc = -1, i = 0, L = buf.length - 7; i < L; ) {
+                        crc = crc >>> 8 ^ table[(crc ^ buf[i++]) & 255];
+                        crc = crc >>> 8 ^ table[(crc ^ buf[i++]) & 255];
+                        crc = crc >>> 8 ^ table[(crc ^ buf[i++]) & 255];
+                        crc = crc >>> 8 ^ table[(crc ^ buf[i++]) & 255];
+                        crc = crc >>> 8 ^ table[(crc ^ buf[i++]) & 255];
+                        crc = crc >>> 8 ^ table[(crc ^ buf[i++]) & 255];
+                        crc = crc >>> 8 ^ table[(crc ^ buf[i++]) & 255];
+                        crc = crc >>> 8 ^ table[(crc ^ buf[i++]) & 255];
+                    }
+                    while (i < L + 7) crc = crc >>> 8 ^ table[(crc ^ buf[i++]) & 255];
+                    return crc ^ -1;
+                }
+                /* much much faster to intertwine utf8 and crc */
+                function crc32_str(str) {
+                    for (var crc = -1, i = 0, L = str.length, c, d; i < L; ) {
+                        c = str.charCodeAt(i++);
+                        if (c < 128) {
+                            crc = crc >>> 8 ^ table[(crc ^ c) & 255];
+                        } else if (c < 2048) {
+                            crc = crc >>> 8 ^ table[(crc ^ (192 | c >> 6 & 31)) & 255];
+                            crc = crc >>> 8 ^ table[(crc ^ (128 | c & 63)) & 255];
+                        } else if (c >= 55296 && c < 57344) {
+                            c = (c & 1023) + 64;
+                            d = str.charCodeAt(i++) & 1023;
+                            crc = crc >>> 8 ^ table[(crc ^ (240 | c >> 8 & 7)) & 255];
+                            crc = crc >>> 8 ^ table[(crc ^ (128 | c >> 2 & 63)) & 255];
+                            crc = crc >>> 8 ^ table[(crc ^ (128 | d >> 6 & 15 | c & 3)) & 255];
+                            crc = crc >>> 8 ^ table[(crc ^ (128 | d & 63)) & 255];
+                        } else {
+                            crc = crc >>> 8 ^ table[(crc ^ (224 | c >> 12 & 15)) & 255];
+                            crc = crc >>> 8 ^ table[(crc ^ (128 | c >> 6 & 63)) & 255];
+                            crc = crc >>> 8 ^ table[(crc ^ (128 | c & 63)) & 255];
+                        }
+                    }
+                    return crc ^ -1;
+                }
+                CRC32.table = table;
+                CRC32.bstr = crc32_bstr;
+                CRC32.buf = crc32_buf;
+                CRC32.str = crc32_str;
+            })(typeof exports !== "undefined" && typeof DO_NOT_EXPORT_CRC === "undefined" ? exports : CRC32);
+        }).call(this, require("buffer").Buffer);
+    }, {
+        buffer: 4
+    } ],
+    9: [ function(require, module, exports) {
         var charenc = {
             // UTF-8 encoding
             utf8: {
@@ -1408,7 +1521,7 @@
         };
         module.exports = charenc;
     }, {} ],
-    8: [ function(require, module, exports) {
+    10: [ function(require, module, exports) {
         (function() {
             var base64map = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", crypt = {
                 // Bit-wise rotation left
@@ -1479,7 +1592,7 @@
             module.exports = crypt;
         })();
     }, {} ],
-    9: [ function(require, module, exports) {
+    11: [ function(require, module, exports) {
         (function(Buffer) {
             (function() {
                 var crypt = require("crypt"), utf8 = require("charenc").utf8, bin = require("charenc").bin, // The core
@@ -1523,9 +1636,9 @@
             })();
         }).call(this, require("buffer").Buffer);
     }, {
-        buffer: 3,
-        charenc: 7,
-        crypt: 8
+        buffer: 4,
+        charenc: 9,
+        crypt: 10
     } ]
 }, {}, [ 1 ]);
 (function(root, factory) {
