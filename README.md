@@ -27,23 +27,31 @@ npm install i18next-text
 ```
 
 ## Initialization
+Normally [i18next-text](https://github.com/cheton/i18next-text/) can be initialized with options by calling i18nText.init():
 ```javascript`
-// You can omit this step if using default options
-i18nText.init();
+// omit this step if using default options
+i18nText.init({
+    debug: true, // default: false
+    hash: 'sha1' // default: 'sha1'
+});
+```
 
-// then extends i18n object to provide a new _() method
+Then extends i18n object to provide a new _() method:
+```javascript
 i18n._ = i18nText._;
 ```
 
+Initializes i18next with options:
 ```javascript
-// with options
 i18n.init({lng: 'en'});
 
 // later
 i18n.t('key');
 i18n._('It\'s no longer needed by specifying the key.');
+```
 
-// with both options and callback
+Initializes i18next with both options and callback:
+```javascript
 i18n.init({lng: 'en'}, function(t) {
     i18n.t('key');
     i18n._('It\'s no longer needed by specifying the key.');
