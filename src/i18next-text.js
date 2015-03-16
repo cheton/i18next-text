@@ -49,24 +49,51 @@
         return options.hash(str);
     };
 
+    exports.exists = function(str, opts) {
+        var key;
+
+        if (typeof str !== 'string') {
+            return false;
+        }
+        
+        opts = opts || {};
+        key = opts.defaultKey;
+        if (typeof key === 'undefined') {
+            key = options.hash(str);
+            log('hash(' + JSON.stringify(str) + ')=' + JSON.stringify(key));
+        }
+
+        if (typeof i18n.exists !== 'function') {
+            error('i18next library is not loaded');
+            return false;
+        }
+
+        return i18n.exists(key, opts);
+    };
+
     exports._ = exports.text = function(str, opts) {
+        var key, t;
+
         if (typeof str !== 'string') {
             return;
         }
 
-        var key = options.hash(str);
-        var translate = i18n.t || i18n.translate;
         opts = opts || {};
-        opts.defaultValue = str;
+        opts.defaultValue = opts.defaultValue || str;
 
-        log('hash(' + JSON.stringify(str) + ')=' + JSON.stringify(key));
+        key = opts.defaultKey;
+        if (typeof key === 'undefined') {
+            key = options.hash(str);
+            log('hash(' + JSON.stringify(str) + ')=' + JSON.stringify(key));
+        }
 
-        if (typeof translate !== 'function') {
+        t = i18n.t || i18n.translate;
+        if (typeof t !== 'function') {
             error('i18next library is not loaded');
             return;
         }
 
-        return translate(key, opts);
+        return t(key, opts);
     };
 
     return exports;

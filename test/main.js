@@ -54,10 +54,6 @@ test('i18next initialization', function(t) {
         i18n.setLng('ja');
         t.equal('ロード中...', i18n.t('loading'));
 
-        // Not exists
-        t.assert(i18n.exists('notExists') === false);
-        t.equal('notExists', i18n.t('notExists'));
-
         t.end();
     });
 });
@@ -103,9 +99,10 @@ test('sha1', function(t) {
         t.equal(expectedKey, text.key(str));
 
         // Not exists
-        t.notOk(i18n.exists('edbfab21e07e4e0dbe02fb875980c40bdd52ad0f'), 'This key would never exist.');
-        t.equal('NotExists', i18n._('NotExists'));
-        t.equal('edbfab21e07e4e0dbe02fb875980c40bdd52ad0f', text.key('NotExists'));
+        t.notOk(i18n.exists('b691228f50f4516da317c20d52bb83be5b58b739'), 'This key would never exist.');
+        t.notOk(text.exists('This value does not exist.'));
+        t.equal('This value does not exist.', i18n._('This value does not exist.'));
+        t.equal('b691228f50f4516da317c20d52bb83be5b58b739', text.key('This value does not exist.'));
 
         t.end();
     });

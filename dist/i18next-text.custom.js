@@ -1,3 +1,9 @@
+/**
+ * i18next-text - Using i18next translations without having the `key` as strings, you do not need to worry about i18n key naming.
+ * Cheton Wu <cheton@gmail.com>
+ * Version 0.1.0
+ * MIT Licensed
+ */
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
         // AMD. Register as an anonymous module.
@@ -42,20 +48,41 @@
     exports.key = function(str) {
         return options.hash(str);
     };
+    exports.exists = function(str, opts) {
+        var key;
+        if (typeof str !== "string") {
+            return false;
+        }
+        opts = opts || {};
+        key = opts.defaultKey;
+        if (typeof key === "undefined") {
+            key = options.hash(str);
+            log("hash(" + JSON.stringify(str) + ")=" + JSON.stringify(key));
+        }
+        if (typeof i18n.exists !== "function") {
+            error("i18next library is not loaded");
+            return false;
+        }
+        return i18n.exists(key, opts);
+    };
     exports._ = exports.text = function(str, opts) {
+        var key, t;
         if (typeof str !== "string") {
             return;
         }
-        var key = options.hash(str);
-        var translate = i18n.t || i18n.translate;
         opts = opts || {};
-        opts.defaultValue = str;
-        log("hash(" + JSON.stringify(str) + ")=" + JSON.stringify(key));
-        if (typeof translate !== "function") {
+        opts.defaultValue = opts.defaultValue || str;
+        key = opts.defaultKey;
+        if (typeof key === "undefined") {
+            key = options.hash(str);
+            log("hash(" + JSON.stringify(str) + ")=" + JSON.stringify(key));
+        }
+        t = i18n.t || i18n.translate;
+        if (typeof t !== "function") {
             error("i18next library is not loaded");
             return;
         }
-        return translate(key, opts);
+        return t(key, opts);
     };
     return exports;
 });

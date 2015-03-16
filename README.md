@@ -16,12 +16,12 @@ Save your time and work more efficiently!
 
 ## Installation
 
-### Bower
+With [bower](http://bower.io/):
 ```
 bower install i18next-text
 ```
 
-### NPM
+With [npm](https://npmjs.org/):
 ```
 npm install i18next-text
 ```
@@ -29,7 +29,7 @@ npm install i18next-text
 ## Initialization
 Normally [i18next-text](https://github.com/cheton/i18next-text/) can be initialized with options by calling i18nText.init():
 ```javascript`
-// omit this step if using default options
+// You can omit this step if using default options
 i18nText.init({
     debug: true, // default: false
     hash: 'sha1' // default: 'sha1'
@@ -47,14 +47,14 @@ i18n.init({lng: 'en'});
 
 // later
 i18n.t('key');
-i18n._('It\'s no longer needed by specifying the key.');
+i18n._('It is no longer needed by specifying the key.');
 ```
 
-Initializes i18next with both options and callback:
+or initializes i18next with both options and callback:
 ```javascript
 i18n.init({lng: 'en'}, function(t) {
     i18n.t('key');
-    i18n._('It\'s no longer needed by specifying the key.');
+    i18n._('It is no longer needed by specifying the key.');
 });
 ```
 
@@ -71,6 +71,24 @@ i18n/
         resource.json
     de/
         resource.json
+```
+
+index.html
+```html
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+    </head>
+    <body>
+        <script src="vendor/i18next.js"></script>
+        <script src="vendor/i18next-text.js"></script>
+        <script>
+            // See "Browser globals" below for example
+        </script>
+    </body>
+</html>
 ```
 
 English resource file (i18n/en/resource.json):
@@ -113,51 +131,38 @@ var options = {
 i18n._ = text._;
 
 i18n.init(options, function() {
-    // Current language is English
     i18n.t('loading'); // will return "Loading..."
-
-    // Change language to German
-    i18n.setLng('de');
-
-    i18n._('Loading...'); // will return "Wird geladen..."
+    i18n._('Loading...', {lng: 'de'}); // will return "Wird geladen..."
 });
 ```
 
 ### Browser globals
-```html
-<script src="vendor/i18next.js"></script>
-<script src="vendor/i18next-text.js"></script>
-<script>
+```javascript
 (function(root) {
-var i18n = root.i18n;
-var i18nText = root.i18nText;
-var options = {
-    lng: 'en',
-    preload: ['en', 'de'],
-    load: 'current',
-    fallbackLng: false,
-    resGetPath: 'i18n/__lng__/__ns__.json',
-    ns: {
-        namespaces: [
-            'resource' // default
-        ],
-        defaultNs: 'resource'
-    }
-};
+    var i18n = root.i18n;
+    var i18nText = root.i18nText;
+    var options = {
+        lng: 'en',
+        preload: ['en', 'de'],
+        load: 'current',
+        fallbackLng: false,
+        resGetPath: 'i18n/__lng__/__ns__.json',
+        ns: {
+            namespaces: [
+                'resource' // default
+            ],
+            defaultNs: 'resource'
+        }
+    };
 
-// extends i18n object to provide a new _() method
-i18n._ = i18nText._;
+    // extends i18n object to provide a new _() method
+    i18n._ = i18nText._;
 
-i18n.init(options, function() {
-    // Current language is English
-    i18n.t('loading'); // will return "Loading..."
-    
-    // Change language to German
-    i18n.setLng('de');
-    i18n._('Loading...'); // will return "Wird geladen..."
-});
+    i18n.init(options, function() {
+        i18n.t('loading'); // will return "Loading..."
+        i18n._('Loading...', {lng: 'de'}); // will return "Wird geladen..."
+    });
 }(this));
-</script>
 ```
 
 ### Translation features
@@ -198,7 +203,13 @@ i18n.init({sendMissing: true});
 ```
 
 ### Custom hash function 
-To apply a custom hash function, you can change `hash` on i18nText.init as needed:
+You can customize your own hash function by including the [i18next-text.custom.js](https://raw.githubusercontent.com/cheton/i18next-text/master/dist/i18next-text.custom.js) file, which is only 2KB in size:
+```html
+<script src="vendor/i18next.js"></script>
+<script src="vendor/i18next-text.custom.js"></script>
+```
+
+In your initialization script, change `hash` on i18nText.init() to apply a custom hash function:
 ```javascript
 i18nText.init({
     hash: function(str) {

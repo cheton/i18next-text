@@ -26,7 +26,7 @@ module.exports = {
         options: require('../config/jshint')
     },
     uglify: {
-        dev: {
+        debug: {
             output: {
                 beautify: true,
                 comments: true
