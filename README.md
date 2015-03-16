@@ -85,7 +85,7 @@ index.html
         <script src="vendor/i18next.js"></script>
         <script src="vendor/i18next-text.js"></script>
         <script>
-            // initialization code
+            // See "Browser globals" below for example
         </script>
     </body>
 </html>
@@ -142,10 +142,7 @@ i18n.init(options, function() {
 ```
 
 ### Browser globals
-```html
-<script src="vendor/i18next.js"></script>
-<script src="vendor/i18next-text.js"></script>
-<script>
+```javascript
 (function(root) {
 var i18n = root.i18n;
 var i18nText = root.i18nText;
@@ -175,7 +172,6 @@ i18n.init(options, function() {
     i18n._('Loading...'); // will return "Wird geladen..."
 });
 }(this));
-</script>
 ```
 
 ### Translation features
