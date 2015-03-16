@@ -94,11 +94,25 @@ All SHA-1 keys are automatically generated using [i18next-scanner](https://githu
 ### In Node.js
 ```javascript
 var i18n = require('i18next');
+var text = require('i18next-text');
+var options = {
+    lng: 'en',
+    preload: ['en', 'de'],
+    load: 'current',
+    fallbackLng: false,
+    resGetPath: 'i18n/__lng__/__ns__.json',
+    ns: {
+        namespaces: [
+            'resource' // default
+        ],
+        defaultNs: 'resource'
+    }
+};
 
 // extends i18n object to provide a new _() method
-i18n._ = require('i18next-text')._;
+i18n._ = text._;
 
-i18n.init({/* options */}, function() {
+i18n.init(options, function() {
     // Current language is English
     i18n.t('loading'); // will return "Loading..."
 
@@ -114,10 +128,27 @@ i18n.init({/* options */}, function() {
 <script src="vendor/i18next.js"></script>
 <script src="vendor/i18next-text.js"></script>
 <script>
+(function(root) {
+var i18n = root.i18n;
+var i18nText = root.i18nText;
+var options = {
+    lng: 'en',
+    preload: ['en', 'de'],
+    load: 'current',
+    fallbackLng: false,
+    resGetPath: 'i18n/__lng__/__ns__.json',
+    ns: {
+        namespaces: [
+            'resource' // default
+        ],
+        defaultNs: 'resource'
+    }
+};
+
 // extends i18n object to provide a new _() method
 i18n._ = i18nText._;
 
-i18n.init({/* options */}, function() {
+i18n.init(options, function() {
     // Current language is English
     i18n.t('loading'); // will return "Loading..."
     
@@ -125,6 +156,7 @@ i18n.init({/* options */}, function() {
     i18n.setLng('de');
     i18n._('Loading...'); // will return "Wird geladen..."
 });
+}(this));
 </script>
 ```
 
@@ -146,14 +178,21 @@ Visit [http://i18next.com/pages/doc_features.html](http://i18next.com/pages/doc_
 
 ## Advanced Usage
 
+### Gets the hashed key with a given string
+You can call the key() function to get the hashed key with a given string:
+```javascript
+var text = require('i18next-text');
+text.key('Loading...'); // will return 'b04ba49f848624bb97ab094a2631d2ad74913498' in SHA-1
+```
+
 ### Providing a default key
-You may want to explicitly specify a default key of a text string:
+You can explicitly specify a default key of a text string by passing a `defaultKey` option:
 ```javascript
 i18n._('Loading...', {defaultKey: 'loading'});
 i18n._('Loading...', {defaultKey: 'b04ba49f848624bb97ab094a2631d2ad74913498'});
 ```
 
-You can send missing resources to server by turning on i18next's sendMissing option:
+Note. Missing resources can be sent to server by turning on i18next's sendMissing option like below:
 ```javascript
 i18n.init({sendMissing: true});
 ```
