@@ -1,7 +1,7 @@
 /**
  * i18next-text - Using i18next translations without having the `key` as strings, you do not need to worry about i18n key naming.
  * Cheton Wu <cheton@gmail.com>
- * Version 0.3.0
+ * Version 0.3.1
  * MIT Licensed
  */
 (function e(t, n, r) {
@@ -57,8 +57,7 @@
         module.exports = function(str) {
             var checksum = crc32.str(str);
             // convert to 2's complement hex
-            var str = (checksum >>> 0).toString(16);
-            return pad(str, 8);
+            return pad((checksum >>> 0).toString(16), 8);
         };
     }, {
         "crc-32": 8
