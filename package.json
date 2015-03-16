@@ -25,7 +25,10 @@
     "npm": "1.1.x"
   },
   "keywords": [
-    "i18next"
+    "i18next",
+    "i18n",
+    "hash",
+    "sha1"
   ],
   "dependencies": {
     "i18next": "^1.7.10",
