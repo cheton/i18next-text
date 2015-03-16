@@ -16,12 +16,12 @@ Save your time and work more efficiently!
 
 ## Installation
 
-### Bower
+With [bower](http://bower.io/):
 ```
 bower install i18next-text
 ```
 
-### NPM
+With [npm](https://npmjs.org/):
 ```
 npm install i18next-text
 ```
@@ -29,7 +29,7 @@ npm install i18next-text
 ## Initialization
 Normally [i18next-text](https://github.com/cheton/i18next-text/) can be initialized with options by calling i18nText.init():
 ```javascript`
-// omit this step if using default options
+// You can omit this step if using default options
 i18nText.init({
     debug: true, // default: false
     hash: 'sha1' // default: 'sha1'
