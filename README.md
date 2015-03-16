@@ -205,6 +205,7 @@ i18n.init({sendMissing: true});
 ### Custom hash function 
 You can customize your own hash function by including the [i18next-text.custom.js](https://raw.githubusercontent.com/cheton/i18next-text/master/dist/i18next-text.custom.js) file, which is only 2KB in size:
 ```html
+<script src="vendor/i18next.js"></script>
 <script src="vendor/i18next-text.custom.js"></script>
 ```
 
