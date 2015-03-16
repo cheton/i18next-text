@@ -73,6 +73,24 @@ i18n/
         resource.json
 ```
 
+index.html
+```html
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+    </head>
+    <body>
+        <script src="vendor/i18next.js"></script>
+        <script src="vendor/i18next-text.js"></script>
+        <script>
+            // initialization code
+        </script>
+    </body>
+</html>
+```
+
 English resource file (i18n/en/resource.json):
 ```json
 {
