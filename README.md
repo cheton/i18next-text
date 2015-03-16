@@ -50,7 +50,7 @@ i18n.t('key');
 i18n._('It\'s no longer needed by specifying the key.');
 ```
 
-Initializes i18next with both options and callback:
+or initializes i18next with both options and callback:
 ```javascript
 i18n.init({lng: 'en'}, function(t) {
     i18n.t('key');
