@@ -26,6 +26,30 @@ bower install i18next-text
 npm install i18next-text
 ```
 
+## Initialization
+```javascript`
+// You can omit this step if using default options
+i18nText.init();
+
+// then extends i18n object to provide a new _() method
+i18n._ = i18nText._;
+```
+
+```javascript
+// with options
+i18n.init({lng: 'en'});
+
+// later
+i18n.t('key');
+i18n._('It\'s no longer needed by specifying the key.');
+
+// with both options and callback
+i18n.init({lng: 'en'}, function(t) {
+    i18n.t('key');
+    i18n._('It\'s no longer needed by specifying the key.');
+});
+```
+
 ## Usage
 
 For example, assume that you have the following directory structure:
@@ -114,9 +138,27 @@ Visit [http://i18next.com/pages/doc_features.html](http://i18next.com/pages/doc_
 
 ## Advanced Usage
 
-### Initialization options
+### Providing a default key
+You may want to explicitly specify a default key of a text string:
+```javascript
+i18n._('Loading...', {defaultKey: 'loading'});
+i18n._('Loading...', {defaultKey: 'b04ba49f848624bb97ab094a2631d2ad74913498'});
+```
+
+You can send missing resources to server by turning on i18next's sendMissing option:
+```javascript
+i18n.init({sendMissing: true});
+```
 
 ### Custom hash function 
+To apply a custom hash function, you can change `hash` on i18nText.init as needed:
+```javascript
+i18nText.init({
+    hash: function(str) {
+        return customHashFunction(str);
+    }
+});
+```
 
 ## License
 
