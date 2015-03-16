@@ -56,14 +56,12 @@
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
 
-<h3>
-<a id="bower" class="anchor" href="#bower" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bower</h3>
+<p>With <a href="http://bower.io/">bower</a>:</p>
 
 <pre><code>bower install i18next-text
 </code></pre>
 
-<h3>
-<a id="npm" class="anchor" href="#npm" aria-hidden="true"><span class="octicon octicon-link"></span></a>NPM</h3>
+<p>With <a href="https://npmjs.org/">npm</a>:</p>
 
 <pre><code>npm install i18next-text
 </code></pre>
@@ -73,7 +71,7 @@
 
 <p>Normally <a href="https://github.com/cheton/i18next-text/">i18next-text</a> can be initialized with options by calling i18nText.init():</p>
 
-<pre lang="javascript`"><code>// omit this step if using default options
+<pre lang="javascript`"><code>// You can omit this step if using default options
 i18nText.init({
     debug: true, // default: false
     hash: 'sha1' // default: 'sha1'
@@ -90,13 +88,13 @@ i18nText.init({
 
 <span class="pl-c">// later</span>
 i18n.t(<span class="pl-s1"><span class="pl-pds">'</span>key<span class="pl-pds">'</span></span>);
-i18n._(<span class="pl-s1"><span class="pl-pds">'</span>It<span class="pl-cce">\'</span>s no longer needed by specifying the key.<span class="pl-pds">'</span></span>);</pre></div>
+i18n._(<span class="pl-s1"><span class="pl-pds">'</span>It is no longer needed by specifying the key.<span class="pl-pds">'</span></span>);</pre></div>
 
-<p>Initializes i18next with both options and callback:</p>
+<p>or initializes i18next with both options and callback:</p>
 
 <div class="highlight highlight-javascript"><pre>i18n.init({lng<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>en<span class="pl-pds">'</span></span>}, <span class="pl-st">function</span>(<span class="pl-vpf">t</span>) {
     i18n.t(<span class="pl-s1"><span class="pl-pds">'</span>key<span class="pl-pds">'</span></span>);
-    i18n._(<span class="pl-s1"><span class="pl-pds">'</span>It<span class="pl-cce">\'</span>s no longer needed by specifying the key.<span class="pl-pds">'</span></span>);
+    i18n._(<span class="pl-s1"><span class="pl-pds">'</span>It is no longer needed by specifying the key.<span class="pl-pds">'</span></span>);
 });</pre></div>
 
 <h2>
@@ -114,6 +112,23 @@ i18n/
     de/
         resource.json
 </code></pre>
+
+<p>index.html</p>
+
+<div class="highlight highlight-html"><pre>&lt;!doctype html&gt;
+&lt;<span class="pl-ent">html</span> <span class="pl-e">class</span>=<span class="pl-s1"><span class="pl-pds">"</span>no-js<span class="pl-pds">"</span></span> <span class="pl-e">lang</span>=<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">head</span>&gt;
+        &lt;<span class="pl-ent">meta</span> <span class="pl-e">charset</span>=<span class="pl-s1"><span class="pl-pds">"</span>utf-8<span class="pl-pds">"</span></span>&gt;
+        &lt;<span class="pl-ent">meta</span> <span class="pl-e">http-equiv</span>=<span class="pl-s1"><span class="pl-pds">"</span>x-ua-compatible<span class="pl-pds">"</span></span> <span class="pl-e">content</span>=<span class="pl-s1"><span class="pl-pds">"</span>ie=edge<span class="pl-pds">"</span></span>&gt;
+    &lt;/<span class="pl-ent">head</span>&gt;
+    &lt;<span class="pl-ent">body</span>&gt;
+<span class="pl-s2">        &lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s1"><span class="pl-pds">"</span>vendor/i18next.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</span>
+<span class="pl-s2">        &lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s1"><span class="pl-pds">"</span>vendor/i18next-text.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</span>
+<span class="pl-s2">        &lt;<span class="pl-ent">script</span>&gt;</span>
+<span class="pl-s2">            <span class="pl-c">// See "Browser globals" below for example</span></span>
+<span class="pl-s2">        &lt;/<span class="pl-ent">script</span>&gt;</span>
+    &lt;/<span class="pl-ent">body</span>&gt;
+&lt;/<span class="pl-ent">html</span>&gt;</pre></div>
 
 <p>English resource file (i18n/en/resource.json):</p>
 
@@ -135,38 +150,57 @@ i18n/
 <a id="in-nodejs" class="anchor" href="#in-nodejs" aria-hidden="true"><span class="octicon octicon-link"></span></a>In Node.js</h3>
 
 <div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> i18n <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>i18next<span class="pl-pds">'</span></span>);
+<span class="pl-s">var</span> text <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>i18next-text<span class="pl-pds">'</span></span>);
+<span class="pl-s">var</span> options <span class="pl-k">=</span> {
+    lng<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>en<span class="pl-pds">'</span></span>,
+    preload<span class="pl-k">:</span> [<span class="pl-s1"><span class="pl-pds">'</span>en<span class="pl-pds">'</span></span>, <span class="pl-s1"><span class="pl-pds">'</span>de<span class="pl-pds">'</span></span>],
+    load<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>current<span class="pl-pds">'</span></span>,
+    fallbackLng<span class="pl-k">:</span> <span class="pl-c1">false</span>,
+    resGetPath<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>i18n/__lng__/__ns__.json<span class="pl-pds">'</span></span>,
+    ns<span class="pl-k">:</span> {
+        namespaces<span class="pl-k">:</span> [
+            <span class="pl-s1"><span class="pl-pds">'</span>resource<span class="pl-pds">'</span></span> <span class="pl-c">// default</span>
+        ],
+        defaultNs<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>resource<span class="pl-pds">'</span></span>
+    }
+};
 
 <span class="pl-c">// extends i18n object to provide a new _() method</span>
-i18n._ <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>i18next-text<span class="pl-pds">'</span></span>)._;
+i18n._ <span class="pl-k">=</span> text._;
 
-i18n.init({<span class="pl-c">/* options */</span>}, <span class="pl-st">function</span>() {
-    <span class="pl-c">// Current language is English</span>
+i18n.init(options, <span class="pl-st">function</span>() {
     i18n.t(<span class="pl-s1"><span class="pl-pds">'</span>loading<span class="pl-pds">'</span></span>); <span class="pl-c">// will return "Loading..."</span>
-
-    <span class="pl-c">// Change language to German</span>
-    i18n.setLng(<span class="pl-s1"><span class="pl-pds">'</span>de<span class="pl-pds">'</span></span>);
-
-    i18n._(<span class="pl-s1"><span class="pl-pds">'</span>Loading...<span class="pl-pds">'</span></span>); <span class="pl-c">// will return "Wird geladen..."</span>
+    i18n._(<span class="pl-s1"><span class="pl-pds">'</span>Loading...<span class="pl-pds">'</span></span>, {lng<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>de<span class="pl-pds">'</span></span>}); <span class="pl-c">// will return "Wird geladen..."</span>
 });</pre></div>
 
 <h3>
 <a id="browser-globals" class="anchor" href="#browser-globals" aria-hidden="true"><span class="octicon octicon-link"></span></a>Browser globals</h3>
 
-<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s1"><span class="pl-pds">"</span>vendor/i18next.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
-&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s1"><span class="pl-pds">"</span>vendor/i18next-text.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
-<span class="pl-s2">&lt;<span class="pl-ent">script</span>&gt;</span>
-<span class="pl-s2"><span class="pl-c">// extends i18n object to provide a new _() method</span></span>
-<span class="pl-s2">i18n._ <span class="pl-k">=</span> i18nText._;</span>
-<span class="pl-s2"></span>
-<span class="pl-s2">i18n.init({<span class="pl-c">/* options */</span>}, <span class="pl-st">function</span>() {</span>
-<span class="pl-s2">    <span class="pl-c">// Current language is English</span></span>
-<span class="pl-s2">    i18n.t(<span class="pl-s1"><span class="pl-pds">'</span>loading<span class="pl-pds">'</span></span>); <span class="pl-c">// will return "Loading..."</span></span>
-<span class="pl-s2"></span>
-<span class="pl-s2">    <span class="pl-c">// Change language to German</span></span>
-<span class="pl-s2">    i18n.setLng(<span class="pl-s1"><span class="pl-pds">'</span>de<span class="pl-pds">'</span></span>);</span>
-<span class="pl-s2">    i18n._(<span class="pl-s1"><span class="pl-pds">'</span>Loading...<span class="pl-pds">'</span></span>); <span class="pl-c">// will return "Wird geladen..."</span></span>
-<span class="pl-s2">});</span>
-<span class="pl-s2">&lt;/<span class="pl-ent">script</span>&gt;</span></pre></div>
+<div class="highlight highlight-javascript"><pre>(<span class="pl-st">function</span>(<span class="pl-vpf">root</span>) {
+    <span class="pl-s">var</span> i18n <span class="pl-k">=</span> root.i18n;
+    <span class="pl-s">var</span> i18nText <span class="pl-k">=</span> root.i18nText;
+    <span class="pl-s">var</span> options <span class="pl-k">=</span> {
+        lng<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>en<span class="pl-pds">'</span></span>,
+        preload<span class="pl-k">:</span> [<span class="pl-s1"><span class="pl-pds">'</span>en<span class="pl-pds">'</span></span>, <span class="pl-s1"><span class="pl-pds">'</span>de<span class="pl-pds">'</span></span>],
+        load<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>current<span class="pl-pds">'</span></span>,
+        fallbackLng<span class="pl-k">:</span> <span class="pl-c1">false</span>,
+        resGetPath<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>i18n/__lng__/__ns__.json<span class="pl-pds">'</span></span>,
+        ns<span class="pl-k">:</span> {
+            namespaces<span class="pl-k">:</span> [
+                <span class="pl-s1"><span class="pl-pds">'</span>resource<span class="pl-pds">'</span></span> <span class="pl-c">// default</span>
+            ],
+            defaultNs<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>resource<span class="pl-pds">'</span></span>
+        }
+    };
+
+    <span class="pl-c">// extends i18n object to provide a new _() method</span>
+    i18n._ <span class="pl-k">=</span> i18nText._;
+
+    i18n.init(options, <span class="pl-st">function</span>() {
+        i18n.t(<span class="pl-s1"><span class="pl-pds">'</span>loading<span class="pl-pds">'</span></span>); <span class="pl-c">// will return "Loading..."</span>
+        i18n._(<span class="pl-s1"><span class="pl-pds">'</span>Loading...<span class="pl-pds">'</span></span>, {lng<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>de<span class="pl-pds">'</span></span>}); <span class="pl-c">// will return "Wird geladen..."</span>
+    });
+}(<span class="pl-v">this</span>));</pre></div>
 
 <h3>
 <a id="translation-features" class="anchor" href="#translation-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Translation features</h3>
@@ -192,21 +226,34 @@ i18n.init({<span class="pl-c">/* options */</span>}, <span class="pl-st">functio
 <a id="advanced-usage" class="anchor" href="#advanced-usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Advanced Usage</h2>
 
 <h3>
+<a id="gets-the-hashed-key-with-a-given-string" class="anchor" href="#gets-the-hashed-key-with-a-given-string" aria-hidden="true"><span class="octicon octicon-link"></span></a>Gets the hashed key with a given string</h3>
+
+<p>You can call the key() function to get the hashed key with a given string:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> text <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>i18next-text<span class="pl-pds">'</span></span>);
+text.key(<span class="pl-s1"><span class="pl-pds">'</span>Loading...<span class="pl-pds">'</span></span>); <span class="pl-c">// will return 'b04ba49f848624bb97ab094a2631d2ad74913498' in SHA-1</span></pre></div>
+
+<h3>
 <a id="providing-a-default-key" class="anchor" href="#providing-a-default-key" aria-hidden="true"><span class="octicon octicon-link"></span></a>Providing a default key</h3>
 
-<p>You may want to explicitly specify a default key of a text string:</p>
+<p>You can explicitly specify a default key of a text string by passing a <code>defaultKey</code> option:</p>
 
 <div class="highlight highlight-javascript"><pre>i18n._(<span class="pl-s1"><span class="pl-pds">'</span>Loading...<span class="pl-pds">'</span></span>, {defaultKey<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>loading<span class="pl-pds">'</span></span>});
 i18n._(<span class="pl-s1"><span class="pl-pds">'</span>Loading...<span class="pl-pds">'</span></span>, {defaultKey<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>b04ba49f848624bb97ab094a2631d2ad74913498<span class="pl-pds">'</span></span>});</pre></div>
 
-<p>You can send missing resources to server by turning on i18next's sendMissing option:</p>
+<p>Note. Missing resources can be sent to server by turning on i18next's sendMissing option like below:</p>
 
 <div class="highlight highlight-javascript"><pre>i18n.init({sendMissing<span class="pl-k">:</span> <span class="pl-c1">true</span>});</pre></div>
 
 <h3>
 <a id="custom-hash-function" class="anchor" href="#custom-hash-function" aria-hidden="true"><span class="octicon octicon-link"></span></a>Custom hash function</h3>
 
-<p>To apply a custom hash function, you can change <code>hash</code> on i18nText.init as needed:</p>
+<p>You can customize your own hash function by including the <a href="https://raw.githubusercontent.com/cheton/i18next-text/master/dist/i18next-text.custom.js">i18next-text.custom.js</a> file, which is only 2KB in size:</p>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s1"><span class="pl-pds">"</span>vendor/i18next.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s1"><span class="pl-pds">"</span>vendor/i18next-text.custom.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<p>In your initialization script, change <code>hash</code> on i18nText.init() to apply a custom hash function:</p>
 
 <div class="highlight highlight-javascript"><pre>i18nText.init({
     <span class="pl-en">hash</span>: <span class="pl-st">function</span>(<span class="pl-vpf">str</span>) {
