@@ -47,14 +47,14 @@ i18n.init({lng: 'en'});
 
 // later
 i18n.t('key');
-i18n._('It\'s no longer needed by specifying the key.');
+i18n._('It is no longer needed by specifying the key.');
 ```
 
 or initializes i18next with both options and callback:
 ```javascript
 i18n.init({lng: 'en'}, function(t) {
     i18n.t('key');
-    i18n._('It\'s no longer needed by specifying the key.');
+    i18n._('It is no longer needed by specifying the key.');
 });
 ```
 
