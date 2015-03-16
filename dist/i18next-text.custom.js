@@ -1,7 +1,7 @@
 /**
  * i18next-text - Using i18next translations without having the `key` as strings, you do not need to worry about i18n key naming.
  * Cheton Wu <cheton@gmail.com>
- * Version 0.3.1
+ * Version 0.4.0
  * MIT Licensed
  */
 (function(root, factory) {
