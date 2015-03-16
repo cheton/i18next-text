@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="I18next-text : Using i18next translations without having the &quot;key&quot; as strings">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>I18next-text</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/cheton/i18next-text">View on GitHub</a>
+
+          <h1 id="project_title">I18next-text</h1>
+          <h2 id="project_tagline">Using i18next translations without having the &quot;key&quot; as strings</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/cheton/i18next-text/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/cheton/i18next-text/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="i18next-text-" class="anchor" href="#i18next-text-" aria-hidden="true"><span class="octicon octicon-link"></span></a>i18next-text <a href="https://travis-ci.org/cheton/i18next-text"><img src="https://travis-ci.org/cheton/i18next-text.svg?branch=master" alt="build status"></a>
+</h1>
+
+<p><a href="https://nodei.co/npm/i18next-text/"><img src="https://nodei.co/npm/i18next-text.png?downloads=true&amp;stars=true" alt="NPM"></a></p>
+
+<p>Using <a href="http://i18next.com/">i18next</a> translations without having the <code>key</code> as strings, you do not need to worry about i18n key naming.</p>
+
+<p>It's recommended to use <a href="https://github.com/cheton/i18next-scanner">i18next-scanner</a> as a Grunt/Gulp task to scan your code, extract and merge translation keys and strings into i18n resource files.</p>
+
+<p>Save your time and work more efficiently!</p>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>Supports most <a href="http://i18next.com/pages/doc_features.html">i18next features</a>.</li>
+<li>Automatically generates a hash for an i18n text string as its unique key. It is not necessary to manually maintain resource files.</li>
+<li>Supports CRC32, MD5, and SHA-1 hash (The default is SHA-1).</li>
+<li>You can customize your own hash function by including the <a href="https://raw.githubusercontent.com/cheton/i18next-text/master/dist/i18next-text.custom.js">i18next-text.custom.js</a> file with only 2KB in size.</li>
+</ul>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<h3>
+<a id="bower" class="anchor" href="#bower" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bower</h3>
+
+<pre><code>bower install i18next-text
+</code></pre>
+
+<h3>
+<a id="npm" class="anchor" href="#npm" aria-hidden="true"><span class="octicon octicon-link"></span></a>NPM</h3>
+
+<pre><code>npm install i18next-text
+</code></pre>
+
+<h2>
+<a id="initialization" class="anchor" href="#initialization" aria-hidden="true"><span class="octicon octicon-link"></span></a>Initialization</h2>
+
+<p>Normally <a href="https://github.com/cheton/i18next-text/">i18next-text</a> can be initialized with options by calling i18nText.init():</p>
+
+<pre lang="javascript`"><code>// omit this step if using default options
+i18nText.init({
+    debug: true, // default: false
+    hash: 'sha1' // default: 'sha1'
+});
+</code></pre>
+
+<p>Then extends i18n object to provide a new _() method:</p>
+
+<div class="highlight highlight-javascript"><pre>i18n._ <span class="pl-k">=</span> i18nText._;</pre></div>
+
+<p>Initializes i18next with options:</p>
+
+<div class="highlight highlight-javascript"><pre>i18n.init({lng<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>en<span class="pl-pds">'</span></span>});
+
+<span class="pl-c">// later</span>
+i18n.t(<span class="pl-s1"><span class="pl-pds">'</span>key<span class="pl-pds">'</span></span>);
+i18n._(<span class="pl-s1"><span class="pl-pds">'</span>It<span class="pl-cce">\'</span>s no longer needed by specifying the key.<span class="pl-pds">'</span></span>);</pre></div>
+
+<p>Initializes i18next with both options and callback:</p>
+
+<div class="highlight highlight-javascript"><pre>i18n.init({lng<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>en<span class="pl-pds">'</span></span>}, <span class="pl-st">function</span>(<span class="pl-vpf">t</span>) {
+    i18n.t(<span class="pl-s1"><span class="pl-pds">'</span>key<span class="pl-pds">'</span></span>);
+    i18n._(<span class="pl-s1"><span class="pl-pds">'</span>It<span class="pl-cce">\'</span>s no longer needed by specifying the key.<span class="pl-pds">'</span></span>);
+});</pre></div>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>For example, assume that you have the following directory structure:</p>
+
+<pre><code>index.html
+vendor/
+    i18next.js
+    i18next-text.js
+i18n/
+    en/
+        resource.json
+    de/
+        resource.json
+</code></pre>
+
+<p>English resource file (i18n/en/resource.json):</p>
+
+<div class="highlight highlight-json"><pre>{
+    <span class="pl-s1"><span class="pl-pds">"</span>loading<span class="pl-pds">"</span></span>: <span class="pl-s1"><span class="pl-pds">"</span>Loading...<span class="pl-pds">"</span></span>,
+    <span class="pl-s1"><span class="pl-pds">"</span>b04ba49f848624bb97ab094a2631d2ad74913498<span class="pl-pds">"</span></span>: <span class="pl-s1"><span class="pl-pds">"</span>Loading...<span class="pl-pds">"</span></span>
+}</pre></div>
+
+<p>German resource file (i18n/de/resource.json):</p>
+
+<div class="highlight highlight-json"><pre>{
+    <span class="pl-s1"><span class="pl-pds">"</span>loading<span class="pl-pds">"</span></span>: <span class="pl-s1"><span class="pl-pds">"</span>Wird geladen...<span class="pl-pds">"</span></span>,
+    <span class="pl-s1"><span class="pl-pds">"</span>b04ba49f848624bb97ab094a2631d2ad74913498<span class="pl-pds">"</span></span>: <span class="pl-s1"><span class="pl-pds">"</span>Wird geladen...<span class="pl-pds">"</span></span>
+}</pre></div>
+
+<p>All SHA-1 keys are automatically generated using <a href="https://github.com/cheton/i18next-scanner">i18next-scanner</a>. You do not need to maintain resource files.</p>
+
+<h3>
+<a id="in-nodejs" class="anchor" href="#in-nodejs" aria-hidden="true"><span class="octicon octicon-link"></span></a>In Node.js</h3>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> i18n <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>i18next<span class="pl-pds">'</span></span>);
+
+<span class="pl-c">// extends i18n object to provide a new _() method</span>
+i18n._ <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>i18next-text<span class="pl-pds">'</span></span>)._;
+
+i18n.init({<span class="pl-c">/* options */</span>}, <span class="pl-st">function</span>() {
+    <span class="pl-c">// Current language is English</span>
+    i18n.t(<span class="pl-s1"><span class="pl-pds">'</span>loading<span class="pl-pds">'</span></span>); <span class="pl-c">// will return "Loading..."</span>
+
+    <span class="pl-c">// Change language to German</span>
+    i18n.setLng(<span class="pl-s1"><span class="pl-pds">'</span>de<span class="pl-pds">'</span></span>);
+
+    i18n._(<span class="pl-s1"><span class="pl-pds">'</span>Loading...<span class="pl-pds">'</span></span>); <span class="pl-c">// will return "Wird geladen..."</span>
+});</pre></div>
+
+<h3>
+<a id="browser-globals" class="anchor" href="#browser-globals" aria-hidden="true"><span class="octicon octicon-link"></span></a>Browser globals</h3>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s1"><span class="pl-pds">"</span>vendor/i18next.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s1"><span class="pl-pds">"</span>vendor/i18next-text.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+<span class="pl-s2">&lt;<span class="pl-ent">script</span>&gt;</span>
+<span class="pl-s2"><span class="pl-c">// extends i18n object to provide a new _() method</span></span>
+<span class="pl-s2">i18n._ <span class="pl-k">=</span> i18nText._;</span>
+<span class="pl-s2"></span>
+<span class="pl-s2">i18n.init({<span class="pl-c">/* options */</span>}, <span class="pl-st">function</span>() {</span>
+<span class="pl-s2">    <span class="pl-c">// Current language is English</span></span>
+<span class="pl-s2">    i18n.t(<span class="pl-s1"><span class="pl-pds">'</span>loading<span class="pl-pds">'</span></span>); <span class="pl-c">// will return "Loading..."</span></span>
+<span class="pl-s2"></span>
+<span class="pl-s2">    <span class="pl-c">// Change language to German</span></span>
+<span class="pl-s2">    i18n.setLng(<span class="pl-s1"><span class="pl-pds">'</span>de<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s2">    i18n._(<span class="pl-s1"><span class="pl-pds">'</span>Loading...<span class="pl-pds">'</span></span>); <span class="pl-c">// will return "Wird geladen..."</span></span>
+<span class="pl-s2">});</span>
+<span class="pl-s2">&lt;/<span class="pl-ent">script</span>&gt;</span></pre></div>
+
+<h3>
+<a id="translation-features" class="anchor" href="#translation-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Translation features</h3>
+
+<p><a href="https://github.com/cheton/i18next-text/">i18next-text</a> supports most <a href="http://i18next.com/pages/doc_features.html">i18next features</a>, for example:</p>
+
+<ul>
+<li>
+<p>Access value in different language:</p>
+
+<div class="highlight highlight-javascript"><pre>i18n._(<span class="pl-s1"><span class="pl-pds">'</span>Loading...<span class="pl-pds">'</span></span>, {lng<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>de<span class="pl-pds">'</span></span>}); <span class="pl-c">// will get value in de instead of en</span></pre></div>
+</li>
+<li>
+<p>Replacing variables:</p>
+
+<div class="highlight highlight-javascript"><pre>i18n._(<span class="pl-s1"><span class="pl-pds">'</span>YouTube has more than __count__ billion users.<span class="pl-pds">'</span></span>, {count<span class="pl-k">:</span> <span class="pl-c1">1</span>});</pre></div>
+</li>
+</ul>
+
+<p>Visit <a href="http://i18next.com/pages/doc_features.html">http://i18next.com/pages/doc_features.html</a> to see more examples.</p>
+
+<h2>
+<a id="advanced-usage" class="anchor" href="#advanced-usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Advanced Usage</h2>
+
+<h3>
+<a id="providing-a-default-key" class="anchor" href="#providing-a-default-key" aria-hidden="true"><span class="octicon octicon-link"></span></a>Providing a default key</h3>
+
+<p>You may want to explicitly specify a default key of a text string:</p>
+
+<div class="highlight highlight-javascript"><pre>i18n._(<span class="pl-s1"><span class="pl-pds">'</span>Loading...<span class="pl-pds">'</span></span>, {defaultKey<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>loading<span class="pl-pds">'</span></span>});
+i18n._(<span class="pl-s1"><span class="pl-pds">'</span>Loading...<span class="pl-pds">'</span></span>, {defaultKey<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>b04ba49f848624bb97ab094a2631d2ad74913498<span class="pl-pds">'</span></span>});</pre></div>
+
+<p>You can send missing resources to server by turning on i18next's sendMissing option:</p>
+
+<div class="highlight highlight-javascript"><pre>i18n.init({sendMissing<span class="pl-k">:</span> <span class="pl-c1">true</span>});</pre></div>
+
+<h3>
+<a id="custom-hash-function" class="anchor" href="#custom-hash-function" aria-hidden="true"><span class="octicon octicon-link"></span></a>Custom hash function</h3>
+
+<p>To apply a custom hash function, you can change <code>hash</code> on i18nText.init as needed:</p>
+
+<div class="highlight highlight-javascript"><pre>i18nText.init({
+    <span class="pl-en">hash</span>: <span class="pl-st">function</span>(<span class="pl-vpf">str</span>) {
+        <span class="pl-k">return</span> customHashFunction(str);
+    }
+});</pre></div>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>Copyright (c) 2015 Cheton Wu</p>
+
+<p>Licensed under the <a href="https://github.com/cheton/i18next-text/blob/master/LICENSE">MIT License</a>.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">I18next-text maintained by <a href="https://github.com/cheton">cheton</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
