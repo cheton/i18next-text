@@ -21,7 +21,8 @@ module.exports = {
         src: [
             'index.js',
             'gulpfile.js',
-            'src/**/*.js'
+            'src/**/*.js',
+            'lib/**/*.js'
         ],
         options: require('../config/jshint')
     },
