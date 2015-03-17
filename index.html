@@ -32,7 +32,7 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-<a id="i18next-text-" class="anchor" href="#i18next-text-" aria-hidden="true"><span class="octicon octicon-link"></span></a>i18next-text <a href="https://travis-ci.org/cheton/i18next-text"><img src="https://travis-ci.org/cheton/i18next-text.svg?branch=master" alt="build status"></a>
+<a id="i18next-text--" class="anchor" href="#i18next-text--" aria-hidden="true"><span class="octicon octicon-link"></span></a>i18next-text <a href="https://travis-ci.org/cheton/i18next-text"><img src="https://travis-ci.org/cheton/i18next-text.svg?branch=master" alt="build status"></a> <a href="https://coveralls.io/r/cheton/i18next-text"><img src="https://coveralls.io/repos/cheton/i18next-text/badge.svg" alt="Coverage Status"></a>
 </h1>
 
 <p><a href="https://nodei.co/npm/i18next-text/"><img src="https://nodei.co/npm/i18next-text.png?downloads=true&amp;stars=true" alt="NPM"></a></p>
@@ -41,13 +41,16 @@
 
 <p>It's recommended to use <a href="https://github.com/cheton/i18next-scanner">i18next-scanner</a> as a Grunt/Gulp task to scan your code, extract and merge translation keys and strings into i18n resource files.</p>
 
-<p>Save your time and work more efficiently!</p>
+<div class="highlight highlight-javascript"><pre>i18n._(<span class="pl-s1"><span class="pl-pds">'</span>Save your time and work more efficiently.<span class="pl-pds">'</span></span>);</pre></div>
+
+<p><strong><a href="http://jsfiddle.net/cheton/fo8Lgact/">Check out our demo</a></strong> on JSFiddle.</p>
 
 <h2>
 <a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
 
 <ul>
 <li>Supports most <a href="http://i18next.com/pages/doc_features.html">i18next features</a>.</li>
+<li>Provides built-in support for <a href="https://github.com/cheton/i18next-text/tree/master#handlebars-i18n-helper">Handlebars i18n helper</a>.</li>
 <li>Automatically generates a hash for an i18n text string as its unique key. It is not necessary to manually maintain resource files.</li>
 <li>Supports CRC32, MD5, and SHA-1 hash (The default is SHA-1).</li>
 <li>You can customize your own hash function by including the <a href="https://raw.githubusercontent.com/cheton/i18next-text/master/dist/i18next-text.custom.js">i18next-text.custom.js</a> file with only 2KB in size.</li>
@@ -150,7 +153,7 @@ i18n/
 <a id="in-nodejs" class="anchor" href="#in-nodejs" aria-hidden="true"><span class="octicon octicon-link"></span></a>In Node.js</h3>
 
 <div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> i18n <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>i18next<span class="pl-pds">'</span></span>);
-<span class="pl-s">var</span> text <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>i18next-text<span class="pl-pds">'</span></span>);
+<span class="pl-s">var</span> i18nText <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>i18next-text<span class="pl-pds">'</span></span>);
 <span class="pl-s">var</span> options <span class="pl-k">=</span> {
     lng<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>en<span class="pl-pds">'</span></span>,
     preload<span class="pl-k">:</span> [<span class="pl-s1"><span class="pl-pds">'</span>en<span class="pl-pds">'</span></span>, <span class="pl-s1"><span class="pl-pds">'</span>de<span class="pl-pds">'</span></span>],
@@ -166,7 +169,7 @@ i18n/
 };
 
 <span class="pl-c">// extends i18n object to provide a new _() method</span>
-i18n._ <span class="pl-k">=</span> text._;
+i18n._ <span class="pl-k">=</span> i18nText._;
 
 i18n.init(options, <span class="pl-st">function</span>() {
     i18n.t(<span class="pl-s1"><span class="pl-pds">'</span>loading<span class="pl-pds">'</span></span>); <span class="pl-c">// will return "Loading..."</span>
@@ -230,8 +233,14 @@ i18n.init(options, <span class="pl-st">function</span>() {
 
 <p>You can call the key() function to get the hashed key with a given string:</p>
 
-<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> text <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>i18next-text<span class="pl-pds">'</span></span>);
-text.key(<span class="pl-s1"><span class="pl-pds">'</span>Loading...<span class="pl-pds">'</span></span>); <span class="pl-c">// will return 'b04ba49f848624bb97ab094a2631d2ad74913498' in SHA-1</span></pre></div>
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> i18nText <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>i18next-text<span class="pl-pds">'</span></span>);
+i18nText.key(<span class="pl-s1"><span class="pl-pds">'</span>Loading...<span class="pl-pds">'</span></span>); <span class="pl-c">// will return a hash string</span></pre></div>
+
+<h3>
+<a id="checks-if-a-string-exists" class="anchor" href="#checks-if-a-string-exists" aria-hidden="true"><span class="octicon octicon-link"></span></a>Checks if a string exists</h3>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> i18nText <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>i18next-text<span class="pl-pds">'</span></span>);
+i18nText.exists(<span class="pl-s1"><span class="pl-pds">'</span>Loading...<span class="pl-pds">'</span></span>); <span class="pl-c">// will return a boolean value</span></pre></div>
 
 <h3>
 <a id="providing-a-default-key" class="anchor" href="#providing-a-default-key" aria-hidden="true"><span class="octicon octicon-link"></span></a>Providing a default key</h3>
@@ -260,6 +269,72 @@ i18n._(<span class="pl-s1"><span class="pl-pds">'</span>Loading...<span class="p
         <span class="pl-k">return</span> customHashFunction(str);
     }
 });</pre></div>
+
+<h2>
+<a id="template--helpers" class="anchor" href="#template--helpers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Template &amp; Helpers</h2>
+
+<h3>
+<a id="handlebars-i18n-helper" class="anchor" href="#handlebars-i18n-helper" aria-hidden="true"><span class="octicon octicon-link"></span></a>Handlebars i18n helper</h3>
+
+<p>i18next-text provides built-in support for Handlebars helper. You can register the <code>i18n</code> helper for use in templates.</p>
+
+<h4>
+<a id="register-helper" class="anchor" href="#register-helper" aria-hidden="true"><span class="octicon octicon-link"></span></a>Register helper</h4>
+
+<p>Use the <code>Handlebars.registerHelper</code> method to register the <code>i18n</code> helper:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> i18nText <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>i18next-text<span class="pl-pds">'</span></span>);
+<span class="pl-s">var</span> handlebars <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>handlebars<span class="pl-pds">'</span></span>);
+
+handlebars.registerHelper(<span class="pl-s1"><span class="pl-pds">'</span>i18n<span class="pl-pds">'</span></span>, i18nText.handlebarsHelper);</pre></div>
+
+<p>By default, Handlebars will escape the returned result by default.
+If you want to generate HTML, you have to return a <code>new Handlebars.SafeString(result)</code> like  so:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> i18nText <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>i18next-text<span class="pl-pds">'</span></span>);
+<span class="pl-s">var</span> handlebars <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>handlebars<span class="pl-pds">'</span></span>);
+
+handlebars.registerHelper(<span class="pl-s1"><span class="pl-pds">'</span>i18n<span class="pl-pds">'</span></span>, <span class="pl-st">function</span>() {
+    <span class="pl-s">var</span> result <span class="pl-k">=</span> i18nText.handlebarsHelper.<span class="pl-s3">apply</span>(<span class="pl-v">this</span>, arguments);
+    <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-en">handlebars.SafeString</span>(result);
+});</pre></div>
+
+<p>In such a circumstance, you will want to manually escape parameters.</p>
+
+<h4>
+<a id="usage-1" class="anchor" href="#usage-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h4>
+
+<p>Here is an example of what our template file might look like:</p>
+
+<div class="highlight highlight-html"><pre>{{i18n 'Basic Example'}}
+{{i18n '__first-name__ __last-name__' first-name=firstname last-name=lastname}}
+{{i18n 'English' defaultKey='locale:language.en-US'}}
+{{i18n defaultKey='loading'}}
+{{#i18n}}Some text{{/i18n}}
+{{#i18n this}}Description: {{description}}{{/i18n}}
+{{#i18n this last-name=lastname}}{{firstname}} __last-name__{{/i18n}}</pre></div>
+
+<p>You can compile the template string into a Handlebars template function, and then render the template by passing a data object (a.k.a. context) into that function:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> source <span class="pl-k">=</span> fs.readFileSync(<span class="pl-s1"><span class="pl-pds">'</span>./handlebars-helper-i18n.hbs<span class="pl-pds">'</span></span>), <span class="pl-s1"><span class="pl-pds">'</span>utf-8<span class="pl-pds">'</span></span>);
+<span class="pl-s">var</span> template <span class="pl-k">=</span> handlebars.<span class="pl-s3">compile</span>(source);
+<span class="pl-s">var</span> context <span class="pl-k">=</span> {
+    <span class="pl-s1"><span class="pl-pds">'</span>firstname<span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-s1"><span class="pl-pds">'</span>Foo<span class="pl-pds">'</span></span>,
+    <span class="pl-s1"><span class="pl-pds">'</span>lastname<span class="pl-pds">'</span></span><span class="pl-k">:</span><span class="pl-s1"><span class="pl-pds">'</span>Bar<span class="pl-pds">'</span></span>,
+    <span class="pl-s1"><span class="pl-pds">'</span>description<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>Foo Bar Test<span class="pl-pds">'</span></span>
+};
+<span class="pl-en">console</span><span class="pl-s3">.log</span>(template(context));</pre></div>
+
+<p>You will see console output like so:</p>
+
+<pre><code>Basic Example
+Foo Bar
+English
+Loading...
+Some text
+Description: Foo Bar Test
+Foo Bar
+</code></pre>
 
 <h2>
 <a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
