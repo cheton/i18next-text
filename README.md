@@ -191,6 +191,12 @@ var i18nText = require('i18next-text');
 i18nText.key('Loading...'); // will return 'b04ba49f848624bb97ab094a2631d2ad74913498' in SHA-1
 ```
 
+### Checks if a string exists
+```javascript
+var i18nText = require('i18next-text');
+i18nText.exists('Loading...'); // will return a boolean value
+```
+
 ### Providing a default key
 You can explicitly specify a default key of a text string by passing a `defaultKey` option:
 ```javascript
