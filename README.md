@@ -7,7 +7,7 @@ Using [i18next](http://i18next.com/) translations without having the `key` as st
 It's recommended to use [i18next-scanner](https://github.com/cheton/i18next-scanner) as a Grunt/Gulp task to scan your code, extract and merge translation keys and strings into i18n resource files.
 
 ```javascript
-i18n._('Save your time and work more efficiently!');
+i18n._('Save your time and work more efficiently.');
 ```
 **[Check out our demo](http://jsfiddle.net/cheton/fo8Lgact/)** on JSFiddle.
 
