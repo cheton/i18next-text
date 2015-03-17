@@ -1,7 +1,7 @@
 /**
  * i18next-text - Using i18next translations without having the `key` as strings, you do not need to worry about i18n key naming.
  * Cheton Wu <cheton@gmail.com>
- * Version 0.4.0
+ * Version 0.5.0
  * MIT Licensed
  */
 (function e(t, n, r) {
@@ -1859,6 +1859,37 @@
             return;
         }
         return t(key, opts);
+    };
+    exports.handlebarsHelper = function(context, options) {
+        var defaultValue;
+        if (typeof context === "object" && typeof options === "undefined") {
+            // {{i18n defaultKey='loading'}}
+            options = context;
+            context = undefined;
+        }
+        if (typeof options === "object" && typeof options.fn === "function") {
+            // {{#i18n}}<span>Some text</span>{{/i18n}}
+            // {{#i18n this}}<p>Description: {{description}}</p>{{/i18n}}
+            defaultValue = options.fn(context);
+        } else if (typeof context === "string") {
+            // {{i18n 'Basic Example'}}
+            // {{i18n '__first-name__ __last-name__' first-name=firstname last-name=lastname}}
+            // {{i18n 'English' defaultKey='locale:language.en-US'}}
+            defaultValue = context;
+        }
+        options = options || {};
+        options.hash = options.hash || {};
+        var opts = i18n.functions.extend({
+            defaultValue: defaultValue
+        }, options.hash);
+        var defaultKey = options.hash.defaultKey;
+        var result;
+        if (typeof defaultKey === "undefined") {
+            result = i18n._(defaultValue, opts);
+        } else {
+            result = i18n.t(defaultKey, opts);
+        }
+        return result;
     };
     return exports;
 });
