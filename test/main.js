@@ -1,10 +1,12 @@
 'use strict';
 
+var fs = require('fs');
 var path = require('path');
 var test = require('tap').test;
+var handlebars = require('handlebars');
 var i18n = require('i18next');
-var text = require('../');
-i18n._ = text._;
+var i18nText = require('../');
+i18n._ = i18nText._;
 
 var toFixturePath = function(fileName) {
     var args = Array.prototype.slice.call(arguments);
@@ -28,99 +30,136 @@ var i18nextOptions = {
     }
 };
 
-test('i18next initialization', function(t) {
+test('setup', function(t) {
+    t.assert(typeof i18nText.handlebarsHelper === 'function');
+    handlebars.registerHelper('i18n', function() {
+        var result = i18nText.handlebarsHelper.apply(this, arguments);
+        return new handlebars.SafeString(result);
+    });
+
     i18n.init(i18nextOptions, function() {
-        // English
-        i18n.setLng('en');
-        t.equal('Loading...', i18n.t('loading'));
-
-        // German
-        i18n.setLng('de');
-        t.equal('Wird geladen...', i18n.t('loading'));
-
-        // French
-        i18n.setLng('fr');
-        t.equal('Chargement...', i18n.t('loading'));
-
-        // Spanish
-        i18n.setLng('es');
-        t.equal('Cargando...', i18n.t('loading'));
-
-        // Italian
-        i18n.setLng('it');
-        t.equal('Caricamento in corso...', i18n.t('loading'));
-
-        // Japanese
-        i18n.setLng('ja');
-        t.equal('ロード中...', i18n.t('loading'));
-
         t.end();
     });
 });
 
+test('teardown', function(t) {
+    t.end();
+});
+
+test('i18next initialization', function(t) {
+    // English
+    i18n.setLng('en');
+    t.equal('Loading...', i18n.t('loading'));
+
+    // German
+    i18n.setLng('de');
+    t.equal('Wird geladen...', i18n.t('loading'));
+
+    // French
+    i18n.setLng('fr');
+    t.equal('Chargement...', i18n.t('loading'));
+
+    // Spanish
+    i18n.setLng('es');
+    t.equal('Cargando...', i18n.t('loading'));
+
+    // Italian
+    i18n.setLng('it');
+    t.equal('Caricamento in corso...', i18n.t('loading'));
+
+    // Japanese
+    i18n.setLng('ja');
+    t.equal('ロード中...', i18n.t('loading'));
+
+    t.end();
+});
+
 test('hash function', function(t) {
-    i18n.init(i18nextOptions, function() {
-        var runTests = function(t, hashMethod) {
-            var hash = require('../lib/hash');
-            var str = 'Loading...';
-            var expectedKey = hash[hashMethod](str);
+    var runHashTest = function(t, hashMethod) {
+        var hash = require('../lib/hash');
+        var str = 'Loading...';
+        var expectedKey = hash[hashMethod](str);
 
-            text.init({hash: hashMethod});
+        i18nText.init({hash: hashMethod});
 
-            // Test for existence of a key
-            t.ok(i18n.exists(expectedKey), 'This key should exist.');
+        // Test for existence of a key
+        t.ok(i18n.exists(expectedKey), 'This key should exist.');
 
-            // English
-            i18n.setLng('en');
-            t.equal('Loading...', i18n._(str), 'English translation should be \'Loading...\'');
-            t.equal(expectedKey, text.key(str));
+        // English
+        i18n.setLng('en');
+        t.equal('Loading...', i18n._(str), 'English translation should be \'Loading...\'');
+        t.equal(expectedKey, i18nText.key(str));
 
-            // German
-            i18n.setLng('de');
-            t.equal('Wird geladen...', i18n._(str), 'German translation should be \'Wird geladen...\'');
-            t.equal(expectedKey, text.key(str));
+        // German
+        i18n.setLng('de');
+        t.equal('Wird geladen...', i18n._(str), 'German translation should be \'Wird geladen...\'');
+        t.equal(expectedKey, i18nText.key(str));
 
-            // French
-            i18n.setLng('fr');
-            t.equal('Chargement...', i18n._(str), 'French translation should be \'Chargement...\'');
-            t.equal(expectedKey, text.key(str));
+        // French
+        i18n.setLng('fr');
+        t.equal('Chargement...', i18n._(str), 'French translation should be \'Chargement...\'');
+        t.equal(expectedKey, i18nText.key(str));
 
-            // Spanish
-            i18n.setLng('es');
-            t.equal('Cargando...', i18n._(str), 'Spanish translation should be \'Cargando...\'');
-            t.equal(expectedKey, text.key(str));
+        // Spanish
+        i18n.setLng('es');
+        t.equal('Cargando...', i18n._(str), 'Spanish translation should be \'Cargando...\'');
+        t.equal(expectedKey, i18nText.key(str));
 
-            // Italian
-            i18n.setLng('it');
-            t.equal('Caricamento in corso...', i18n._(str), 'Italian translation should be \'Caricamento in corso...\'');
-            t.equal(expectedKey, text.key(str));
+        // Italian
+        i18n.setLng('it');
+        t.equal('Caricamento in corso...', i18n._(str), 'Italian translation should be \'Caricamento in corso...\'');
+        t.equal(expectedKey, i18nText.key(str));
 
-            // Japanese
-            i18n.setLng('ja');
-            t.equal('ロード中...', i18n._(str), 'Japanese translation should be \'ロード中...\'');
-            t.equal(expectedKey, text.key(str));
+        // Japanese
+        i18n.setLng('ja');
+        t.equal('ロード中...', i18n._(str), 'Japanese translation should be \'ロード中...\'');
+        t.equal(expectedKey, i18nText.key(str));
 
-            // Not exists
-            str = 'This value does not exist.';
-            expectedKey = hash[hashMethod](str);
-            t.notOk(i18n.exists(expectedKey));
-            t.notOk(text.exists(str));
-            t.assert(expectedKey === text.key(str));
-            t.equal(str, i18n._(str));
+        // Not exists
+        str = 'This value does not exist.';
+        expectedKey = hash[hashMethod](str);
+        t.notOk(i18n.exists(expectedKey));
+        t.notOk(i18nText.exists(str));
+        t.assert(expectedKey === i18nText.key(str));
+        t.equal(str, i18n._(str));
 
-            t.end();
-        };
+        t.end();
+    };
 
-        t.test('crc32', function(t) {
-            runTests(t, 'crc32');
-        });
-
-        t.test('sha1', function(t) {
-            runTests(t, 'sha1');
-        });
-
-        t.test('md5', function(t) {
-            runTests(t, 'md5');
-        });
+    t.test('crc32', function(t) {
+        runHashTest(t, 'crc32');
     });
+
+    t.test('sha1', function(t) {
+        runHashTest(t, 'sha1');
+    });
+
+    t.test('md5', function(t) {
+        runHashTest(t, 'md5');
+    });
+});
+
+test('handlebars-helper-i18n', function(t) {
+    var source = fs.readFileSync(toFixturePath('handlebars-helper-i18n.hbs'), 'utf-8');
+    var template = handlebars.compile(source);
+    var context = {
+        'firstname':'Foo',
+        'lastname':'Bar',
+        'description': 'Foo Bar Test'
+    };
+    var expectedOutput = [
+        'Basic Example',
+        'Foo Bar',
+        'English',
+        'Loading...',
+        'Some text',
+        'Description: Foo Bar Test',
+        'Foo Bar',
+        ''
+    ].join('\n');
+
+    i18n.setLng('en');
+    t.equal(template(context), expectedOutput);
+
+    t.end();
 });

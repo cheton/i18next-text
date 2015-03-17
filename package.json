@@ -1,6 +1,6 @@
 {
   "name": "i18next-text",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Using i18next translations without having the `key` as strings, you do not need to worry about i18n key naming.",
   "homepage": "http://cheton.github.io/i18next-text/",
   "author": "Cheton Wu <cheton@gmail.com>",
@@ -49,6 +49,7 @@
     "gulp-replace": "^0.5.3",
     "gulp-uglify": "^1.1.0",
     "gulp-util": "^3.0.4",
+    "handlebars": "^3.0.0",
     "lodash": "^3.5.0",
     "run-sequence": "^1.0.2",
     "tap": "^0.7.1",
