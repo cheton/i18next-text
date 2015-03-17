@@ -10,7 +10,7 @@ Save your time and work more efficiently!
 
 ## Features
 * Supports most [i18next features](http://i18next.com/pages/doc_features.html).
-* Provides built-in support for Handlebars i18n helper.
+* Provides built-in support for [Handlebars i18n helper](https://github.com/cheton/i18next-text/tree/master#handlebars-i18n-helper).
 * Automatically generates a hash for an i18n text string as its unique key. It is not necessary to manually maintain resource files.
 * Supports CRC32, MD5, and SHA-1 hash (The default is SHA-1).
 * You can customize your own hash function by including the [i18next-text.custom.js](https://raw.githubusercontent.com/cheton/i18next-text/master/dist/i18next-text.custom.js) file with only 2KB in size.
@@ -229,7 +229,10 @@ i18nText.init({
 
 ### Handlebars i18n helper
 
-Use the Handlebars.registerHelper method to register the `i18n` helper:
+i18next-text provides built-in support for Handlebars helper. You can register the `i18n` helper for use in templates.
+
+#### Register helper
+Use the `Handlebars.registerHelper` method to register the `i18n` helper:
 ```javascript
 var i18nText = require('i18next-text');
 var handlebars = require('handlebars');
@@ -237,9 +240,9 @@ var handlebars = require('handlebars');
 handlebars.registerHelper('i18n', i18nText.handlebarsHelper);
 ```
 
+
 By default, Handlebars will escape the returned result by default.
-If you want to generate HTML, you have to return a `new Handlebars.SafeString(result)`.
-In such a circumstance, you will want to manually escape parameters like so:
+If you want to generate HTML, you have to return a `new Handlebars.SafeString(result)` like  so:
 ```javascript
 var i18nText = require('i18next-text');
 var handlebars = require('handlebars');
@@ -249,8 +252,10 @@ handlebars.registerHelper('i18n', function() {
     return new handlebars.SafeString(result);
 });
 ```
+In such a circumstance, you will want to manually escape parameters.
 
-Usage in template:
+#### Usage
+Here is an example of what our template file might look like:
 ```html
 {{i18n 'Basic Example'}}
 {{i18n '__first-name__ __last-name__' first-name=firstname last-name=lastname}}
