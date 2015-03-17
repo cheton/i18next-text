@@ -188,7 +188,7 @@ Visit [http://i18next.com/pages/doc_features.html](http://i18next.com/pages/doc_
 You can call the key() function to get the hashed key with a given string:
 ```javascript
 var i18nText = require('i18next-text');
-i18nText.key('Loading...'); // will return 'b04ba49f848624bb97ab094a2631d2ad74913498' in SHA-1
+i18nText.key('Loading...'); // will return a hash string
 ```
 
 ### Checks if a string exists
