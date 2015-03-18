@@ -1,7 +1,7 @@
 /**
  * i18next-text - Using i18next translations without having the `key` as strings, you do not need to worry about i18n key naming.
  * Cheton Wu <cheton@gmail.com>
- * Version 0.5.0
+ * Version 0.5.1
  * MIT Licensed
  */
 (function e(t, n, r) {
@@ -30,14 +30,15 @@
 })({
     1: [ function(require, module, exports) {
         (function(root, factory) {
-            if (root === window) {
+            if (typeof window !== "undefined") {
+                root = window;
                 root.i18nText = root.i18nText || {};
                 root.i18nText.hash = root.i18nText.hash || {};
                 factory(exports = root.i18nText.hash);
             } else {
                 factory(exports);
             }
-        })(window || this, function(exports) {
+        })(this, function(exports) {
             exports.crc32 = require("./crc32");
             exports.md5 = require("./md5");
             exports.sha1 = require("./sha1");
