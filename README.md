@@ -9,6 +9,8 @@ It's recommended to use [i18next-scanner](https://github.com/cheton/i18next-scan
 ```javascript
 i18n._('Save your time and work more efficiently.');
 ```
+
+## Demo
 **[Check out our demo](http://jsfiddle.net/cheton/fo8Lgact/)** on JSFiddle.
 
 ## Features
