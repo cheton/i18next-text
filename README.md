@@ -308,6 +308,8 @@ Description: Foo Bar Test
 Foo Bar
 ```
 
+You can see a demo [here](http://jsfiddle.net/cheton/fo8Lgact/).
+
 ## License
 
 Copyright (c) 2015 Cheton Wu
