@@ -200,6 +200,22 @@ var i18nText = require('i18next-text');
 i18nText.exists('Loading...'); // will return a boolean value
 ```
 
+### Locates missing translation
+```javascript
+var strNotTranslated = '<span class="highlight error">STRING_NOT_TRANSLATED</span>';
+i18n._('YouTube has more than one billion users each month.', {
+    lng: 'de',
+    defaultValue: strNotTranslated
+});
+```
+
+It will produce the following output if above string is not available in `de` translation:
+```html
+<span class="highlight error">STRING_NOT_TRANSLATED</span>
+```
+
+You can see a demo [here](http://jsfiddle.net/cheton/fo8Lgact/).
+
 ### Providing a default key
 You can explicitly specify a default key of a text string by passing a `defaultKey` option:
 ```javascript
