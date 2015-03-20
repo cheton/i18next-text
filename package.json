@@ -1,9 +1,10 @@
 {
   "name": "i18next-text",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Using i18next translations without having the `key` as strings, you do not need to worry about i18n key naming.",
   "homepage": "http://cheton.github.io/i18next-text/",
   "author": "Cheton Wu <cheton@gmail.com>",
+  "main": "./index.js",
   "scripts": {
     "test": "npm run gulp && npm run tap-test",
     "gulp": "gulp",
