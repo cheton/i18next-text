@@ -27,6 +27,7 @@
   "keywords": [
     "i18next",
     "i18n",
+    "gettext",
     "hash",
     "sha1",
     "crc32",
