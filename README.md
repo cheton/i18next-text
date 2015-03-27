@@ -2,9 +2,9 @@
 
 [![NPM](https://nodei.co/npm/i18next-text.png?downloads=true&stars=true)](https://nodei.co/npm/i18next-text/)
 
-Using [i18next](http://i18next.com/) translations without having the `key` as strings, you do not need to worry about i18n key naming.
+Using [i18next](http://i18next.com/) translations without the need to maintain i18n keys.
 
-It's recommended to use [i18next-scanner](https://github.com/cheton/i18next-scanner) as a Grunt/Gulp task to scan your code, extract and merge translation keys and strings into i18n resource files.
+It's recommended to use [i18next-scanner](https://github.com/cheton/i18next-scanner#usage-with-i18next-text) as a Gulp or Grunt plugin to scan your code, extract translation keys/values, and merge them into i18n resource files.
 
 ```javascript
 i18n._('Save your time and work more efficiently.');
