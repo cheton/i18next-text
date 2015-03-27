@@ -38,54 +38,62 @@ gulp.task('jshint', function() {
             .on('error', errorHandler.error);
 });
 
-gulp.task('hash', ['hash:debug', 'hash:dist']);
-gulp.task('hash:debug', function() {
+gulp.task('build-hash', ['build-hash:debug', 'build-hash:uglify']);
+gulp.task('build-hash:debug', function() {
     return browserify()
         .add('./lib/hash/index.js')
         .bundle()
         .pipe(source('i18next-text.hash.js'))
         .pipe(gulp.dest('dist'));
 });
-gulp.task('hash:dist', ['hash:debug'], function() {
+gulp.task('build-hash:uglify', ['build-hash:debug'], function() {
     return gulp.src('dist/i18next-text.hash.js')
         .pipe(uglify(config.uglify.dist))
         .pipe(rename('i18next-text.hash.min.js'))
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('build:debug', ['hash'], function() {
+gulp.task('build-all', ['build-all:debug', 'build-all:uglify']);
+gulp.task('build-all:debug', ['build-hash'], function() {
     return gulp.src(['dist/i18next-text.hash.js', 'src/i18next-text.js'])
         .pipe(uglify(config.uglify.debug))
         .pipe(concat('i18next-text.js'))
-        .pipe(header(config.banner, {pkg: pkg}))
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('build:dist', ['hash'], function() {
+gulp.task('build-all:uglify', ['build-hash'], function() {
     return gulp.src(['dist/i18next-text.hash.js', 'src/i18next-text.js'])
         .pipe(uglify(config.uglify.dist))
         .pipe(concat('i18next-text.min.js'))
-        .pipe(header(config.banner, {pkg: pkg}))
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('build:custom-debug',function() {
+gulp.task('build-custom', ['build-custom:debug', 'build-custom:uglify']);
+gulp.task('build-custom:debug', function() {
     return gulp.src(['src/i18next-text.js'])
         .pipe(uglify(config.uglify.debug))
         .pipe(concat('i18next-text.custom.js'))
-        .pipe(header(config.banner, {pkg: pkg}))
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('build:custom-dist',function() {
+gulp.task('build-custom:uglify', function() {
     return gulp.src(['src/i18next-text.js'])
         .pipe(uglify(config.uglify.dist))
         .pipe(concat('i18next-text.custom.min.js'))
+        .pipe(gulp.dest('dist'));
+});
+
+gulp.task('build:post', function() {
+    return gulp.src(['dist/*.js'])
         .pipe(header(config.banner, {pkg: pkg}))
         .pipe(gulp.dest('dist'));
 });
 
 gulp.task('build', ['jshint'], function(callback) {
-    runSequence('clean', ['build:debug', 'build:dist', 'build:custom-debug', 'build:custom-dist'], callback);
+    runSequence('clean',
+        ['build-hash', 'build-all', 'build-custom'],
+        'build:post',
+        callback
+    );
 });
 gulp.task('default', ['build']);
