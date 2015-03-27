@@ -3,7 +3,7 @@
         // AMD. Register as an anonymous module.
         define(['exports', 'i18next'], function(exports, i18n) {
             root.i18nText = (root.i18nText || {});
-            factory((exports = root.i18nText), i18n);
+            return factory((exports = root.i18nText), i18n);
         });
     } else if (typeof exports !== 'undefined') {
         // CommonJS
