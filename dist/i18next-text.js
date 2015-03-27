@@ -1,7 +1,7 @@
 /**
  * i18next-text - Using i18next translations without having the `key` as strings, you do not need to worry about i18n key naming.
  * Cheton Wu <cheton@gmail.com>
- * Version 0.5.2
+ * Version 0.5.3
  * MIT Licensed
  */
 (function e(t, n, r) {
@@ -1785,7 +1785,7 @@
         // AMD. Register as an anonymous module.
         define([ "exports", "i18next" ], function(exports, i18n) {
             root.i18nText = root.i18nText || {};
-            factory(exports = root.i18nText, i18n);
+            return factory(exports = root.i18nText, i18n);
         });
     } else if (typeof exports !== "undefined") {
         // CommonJS
