@@ -1,7 +1,7 @@
 {
     "name": "i18next-text",
     "description": "Using i18next translations without having the `key` as strings, you do not need to worry about i18n key naming.",
-    "version": "0.5.3",
+    "version": "0.5.4",
     "main": [
         "dist/*"
     ],
