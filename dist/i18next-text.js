@@ -1969,6 +1969,11 @@
     var echo = function(str) {
         return str;
     };
+    var defaultHash = "sha1";
+    var options = {
+        debug: false,
+        hash: exports.hash[defaultHash] || echo
+    };
     var error = function(str) {
         if (typeof console !== "undefined" && typeof console.error === "function") {
             console.error("i18next-text:", str);
@@ -1978,11 +1983,6 @@
         if (options.debug && typeof console !== "undefined" && typeof console.log === "function") {
             console.log("i18next-text:", str);
         }
-    };
-    var defaultHash = "sha1";
-    var options = {
-        debug: false,
-        hash: exports.hash[defaultHash] || echo
     };
     exports.init = function(opts) {
         opts = opts || {};
