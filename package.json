@@ -1,28 +1,21 @@
 {
   "name": "i18next-text",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "description": "Using i18next translations without having the `key` as strings, you do not need to worry about i18n key naming.",
   "homepage": "http://cheton.github.io/i18next-text/",
   "author": "Cheton Wu <cheton@gmail.com>",
   "main": "./index.js",
   "scripts": {
-    "test": "npm run gulp && npm run tap-test",
-    "gulp": "gulp",
-    "tap-test": "tap test/*.js"
+    "test": "gulp && node_modules/.bin/tap --coverage test/*.js",
+    "coveralls": "node_modules/.bin/tap --coverage --coverage-report=text-lcov test/*.js | node_modules/.bin/coveralls"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:cheton/i18next-text.git"
   },
   "license": "MIT",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/cheton/i18next-text/blob/master/LICENSE"
-    }
-  ],
   "engines": {
-    "node": "0.10.x"
+    "node": ">=0.10.x"
   },
   "keywords": [
     "i18next",
@@ -34,13 +27,14 @@
     "md5"
   ],
   "dependencies": {
-    "MD5": "^1.2.1",
     "crc-32": "^0.2.2",
     "i18next": "^1.7.10",
+    "md5": "^2.0.0",
     "sha1": "^1.1.0"
   },
   "devDependencies": {
     "browserify": "^9.0.3",
+    "coveralls": "^2.11.4",
     "del": "^1.1.1",
     "gulp": "^3.8.11",
     "gulp-concat": "^2.5.2",
@@ -53,7 +47,7 @@
     "handlebars": "^3.0.0",
     "lodash": "^3.5.0",
     "run-sequence": "^1.0.2",
-    "tap": "^0.7.1",
+    "tap": "^2.3.1",
     "vinyl-source-stream": "^1.1.0",
     "yargs": "^3.5.4"
   }
