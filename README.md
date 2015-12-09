@@ -1,4 +1,4 @@
-# i18next-text [![build status](https://travis-ci.org/cheton/i18next-text.svg?branch=master)](https://travis-ci.org/cheton/i18next-text) [![Coverage Status](https://coveralls.io/repos/cheton/i18next-text/badge.svg)](https://coveralls.io/r/cheton/i18next-text)
+# i18next-text [![build status](https://travis-ci.org/cheton/i18next-text.svg?branch=master)](https://travis-ci.org/cheton/i18next-text) [![Coverage Status](https://coveralls.io/repos/cheton/i18next-text/badge.svg?branch=master&service=github)](https://coveralls.io/github/cheton/i18next-text?branch=master)
 
 [![NPM](https://nodei.co/npm/i18next-text.png?downloads=true&stars=true)](https://nodei.co/npm/i18next-text/)
 

@@ -75,7 +75,7 @@ test('i18next initialization', function(t) {
 });
 
 test('hash function', function(t) {
-    var runHashTest = function(t, hashMethod) {
+    var runHashTest = function(tt, hashMethod) {
         var hash = require('../lib/hash');
         var str = 'Loading...';
         var expectedKey = hash[hashMethod](str);
@@ -83,60 +83,62 @@ test('hash function', function(t) {
         i18nText.init({hash: hashMethod});
 
         // Test for existence of a key
-        t.ok(i18n.exists(expectedKey), 'This key should exist.');
+        tt.ok(i18n.exists(expectedKey), 'This key should exist.');
 
         // English
         i18n.setLng('en');
-        t.equal('Loading...', i18n._(str), 'English translation should be \'Loading...\'');
-        t.equal(expectedKey, i18nText.key(str));
+        tt.equal('Loading...', i18n._(str), 'English translation should be \'Loading...\'');
+        tt.equal(expectedKey, i18nText.key(str));
 
         // German
         i18n.setLng('de');
-        t.equal('Wird geladen...', i18n._(str), 'German translation should be \'Wird geladen...\'');
-        t.equal(expectedKey, i18nText.key(str));
+        tt.equal('Wird geladen...', i18n._(str), 'German translation should be \'Wird geladen...\'');
+        tt.equal(expectedKey, i18nText.key(str));
 
         // French
         i18n.setLng('fr');
-        t.equal('Chargement...', i18n._(str), 'French translation should be \'Chargement...\'');
-        t.equal(expectedKey, i18nText.key(str));
+        tt.equal('Chargement...', i18n._(str), 'French translation should be \'Chargement...\'');
+        tt.equal(expectedKey, i18nText.key(str));
 
         // Spanish
         i18n.setLng('es');
-        t.equal('Cargando...', i18n._(str), 'Spanish translation should be \'Cargando...\'');
-        t.equal(expectedKey, i18nText.key(str));
+        tt.equal('Cargando...', i18n._(str), 'Spanish translation should be \'Cargando...\'');
+        tt.equal(expectedKey, i18nText.key(str));
 
         // Italian
         i18n.setLng('it');
-        t.equal('Caricamento in corso...', i18n._(str), 'Italian translation should be \'Caricamento in corso...\'');
-        t.equal(expectedKey, i18nText.key(str));
+        tt.equal('Caricamento in corso...', i18n._(str), 'Italian translation should be \'Caricamento in corso...\'');
+        tt.equal(expectedKey, i18nText.key(str));
 
         // Japanese
         i18n.setLng('ja');
-        t.equal('ロード中...', i18n._(str), 'Japanese translation should be \'ロード中...\'');
-        t.equal(expectedKey, i18nText.key(str));
+        tt.equal('ロード中...', i18n._(str), 'Japanese translation should be \'ロード中...\'');
+        tt.equal(expectedKey, i18nText.key(str));
 
         // Not exists
         str = 'This value does not exist.';
         expectedKey = hash[hashMethod](str);
-        t.notOk(i18n.exists(expectedKey));
-        t.notOk(i18nText.exists(str));
-        t.assert(expectedKey === i18nText.key(str));
-        t.equal(str, i18n._(str));
+        tt.notOk(i18n.exists(expectedKey));
+        tt.notOk(i18nText.exists(str));
+        tt.assert(expectedKey === i18nText.key(str));
+        tt.equal(str, i18n._(str));
 
-        t.end();
+        tt.end();
     };
 
-    t.test('crc32', function(t) {
-        runHashTest(t, 'crc32');
+    t.test('crc32', function(tt) {
+        runHashTest(tt, 'crc32');
     });
 
-    t.test('sha1', function(t) {
-        runHashTest(t, 'sha1');
+    t.test('sha1', function(tt) {
+        runHashTest(tt, 'sha1');
     });
 
-    t.test('md5', function(t) {
-        runHashTest(t, 'md5');
+    t.test('md5', function(tt) {
+        runHashTest(tt, 'md5');
     });
+
+    t.end();
 });
 
 test('handlebars-helper-i18n', function(t) {
