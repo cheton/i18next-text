@@ -314,6 +314,6 @@ You can see a demo [here](http://jsfiddle.net/cheton/fo8Lgact/).
 
 ## License
 
-Copyright (c) 2015 Cheton Wu
+Copyright (c) 2015-2016 Cheton Wu
 
 Licensed under the [MIT License](https://github.com/cheton/i18next-text/blob/master/LICENSE).
